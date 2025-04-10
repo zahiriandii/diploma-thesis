@@ -6,16 +6,13 @@
       <!-- Back Button (Row 0, Column 0) -->
       <Button
         text="Back"
-        @tap="$modal.close()"
+        @tap="$modal.close"
         row="0"
         col="1"
         backgroundColor="#007aff"
         color="white"
         borderRadius="5"
       />
-
-     
-      <Label text="City Selection" row="1" col="1" verticalAlignment="center" />
       
       
       <StackLayout row="2" col="0" colSpan="2">
