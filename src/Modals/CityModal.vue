@@ -16,13 +16,14 @@
       
       
       <StackLayout row="2" col="0" colSpan="2">
-        <Label text="Choose a city" />
-        <ListView :items="cities" @itemTap="selectDesiredCity">
-          <template #item="{ item }">
-            <StackLayout>
-              <Label :text="item" />
-            </StackLayout>
-        </template>
+       <Label text="Choose a city" class="bg-green-500" />
+  
+      <ListView :items="cities" @itemTap="selectDesiredCity">
+      <template #item="{ item }">
+        <StackLayout >
+         <Label :text="item" />
+        </StackLayout>
+      </template>
       </ListView>
       </StackLayout>
       
