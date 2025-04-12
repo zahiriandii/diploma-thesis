@@ -42,29 +42,35 @@ import CityToModal from '~/Modals/CityToModal.vue';
   <Page>
     <StackLayout>
       <!-- Custom "ActionBar" -->
-      <GridLayout columns="auto, *" rows="auto" class="custom-action-bar">
-        <Label text="🏠" col="0" class="icon" />
-        <Label text="Home Component" col="1" class="title" />
-      </GridLayout>
+      
 
       <!-- Page content -->
-      <StackLayout>
-        <Label text="From" />
-        <Button text="Select a City" @tap="selectCity" />
-        <Label :text="'Selected From ' + selectedCity" />
-        <Label text="To" textWrap="true" />
-        <Button text="Select a city" @tap="selectCityTo"/>
-        <Label :text="'Selected To ' + selectedTo " textWrap="true" />
+      <StackLayout style="border-width: 2; border-color: #818cf8;" 
+                   class=" mt-5 pt-36 rounded-xl shadow-xl" 
+                   width="350" height="500">
         
         
+        
+      <Button :text="selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+      <!-- Flexbox inside StackLayout -->
+     <FlexboxLayout justifyContent="center" alignItems="center" height="100">
+      <Label :text="'Selected From ' + selectedCity" />
+     </FlexboxLayout>
+
+     
+     <Button :text="selectedTo == '' ? 'To' : selectedTo " @tap="selectCityTo" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+     <FlexboxLayout justifyContent="center" alignItems="center" height="100">
+      <Label :text="'Selected To ' + selectedTo" textWrap="true" />
+     </FlexboxLayout>
+     
       </StackLayout>
     </StackLayout>
   </Page>
 
 </template>
 
-<style>
-.custom-action-bar {
+<!-- <style>
+/* .custom-action-bar {
   padding: 12px;
   background-color: #3f51b5;
   color: white;
@@ -83,5 +89,5 @@ import CityToModal from '~/Modals/CityToModal.vue';
   font-size: 20;
   color: white;
   vertical-align: center;
-}
-</style>
+} */
+</style> -->
