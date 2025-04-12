@@ -2,8 +2,10 @@
 
   import { $showModal, ref } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
+import CityToModal from '~/Modals/CityToModal.vue';
 
   const selectedCity = ref('');
+  const selectedTo = ref('');
 
    const selectCity = () =>
    {
@@ -17,6 +19,20 @@ import CityModal from '~/Modals/CityModal.vue';
         selectedCity.value = selected;
       }
     });
+   }
+
+   const selectCityTo = () =>
+   {
+     $showModal(CityToModal, {
+      fullscreen: true,
+      props: {
+        cities: ["Kumanovo","Skopje","Wien"]
+      },
+      closeCallback: (selected) => 
+      {
+        selectedTo.value = selected;
+      }
+     })
    }
 
 </script>
@@ -35,7 +51,12 @@ import CityModal from '~/Modals/CityModal.vue';
       <StackLayout>
         <Label text="From" />
         <Button text="Select a City" @tap="selectCity" />
-        <Label :text="'Selected City is ' + selectedCity" />
+        <Label :text="'Selected From ' + selectedCity" />
+        <Label text="To" textWrap="true" />
+        <Button text="Select a city" @tap="selectCityTo"/>
+        <Label :text="'Selected To ' + selectedTo " textWrap="true" />
+        
+        
       </StackLayout>
     </StackLayout>
   </Page>
