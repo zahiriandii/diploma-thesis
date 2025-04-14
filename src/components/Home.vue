@@ -3,9 +3,11 @@
   import { $showModal, ref } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
+import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
 
   const selectedCity = ref('');
   const selectedTo = ref('');
+  const selectedDate = ref('');
 
    const selectCity = () =>
    {
@@ -35,6 +37,21 @@ import CityToModal from '~/Modals/CityToModal.vue';
      })
    }
 
+   const openDateModal = () =>
+   {
+    $showModal(DateSelectionModal,{
+      fullscreen: false,
+      props: {
+        selected: selectedDate.value
+      },
+      closeCallback : (result) => 
+      {
+        selectedDate.value = result
+      }
+    })
+    
+   }
+
 </script>
 
 <template>
@@ -62,10 +79,14 @@ import CityToModal from '~/Modals/CityToModal.vue';
      <FlexboxLayout justifyContent="center" alignItems="center" height="100">
       <Label :text="'Selected To ' + selectedTo" textWrap="true" />
      </FlexboxLayout>
-     
       </StackLayout>
+        <StackLayout>
+        <Button :text="selectedDate || 'Pick a Date'" @tap="openDateModal" />
+        </StackLayout>
+    
     </StackLayout>
-  </Page>
+    </Page>
+  
 
 </template>
 
