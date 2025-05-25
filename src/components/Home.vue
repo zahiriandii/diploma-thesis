@@ -40,7 +40,7 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
    const openDateModal = () =>
    {
     $showModal(DateSelectionModal,{
-      fullscreen: false,
+      fullscreen: true,
       props: {
         selected: selectedDate.value
       },
@@ -81,7 +81,7 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
      </FlexboxLayout>
       </StackLayout>
         <StackLayout>
-        <Button :text="selectedDate || 'Pick a Date'" @tap="openDateModal" />
+        <Button :text="selectedDate == '' ? 'Pick a Date' : selectedDate " @tap="openDateModal" />
         </StackLayout>
     
     </StackLayout>
