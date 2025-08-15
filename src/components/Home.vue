@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
-  import { $showModal, ref } from 'nativescript-vue';
+  import { FlexboxLayout, StackLayout } from '@nativescript/core';
+import { $showModal, ref } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
 import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
@@ -42,15 +43,20 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
     $showModal(DateSelectionModal,{
       fullscreen: true,
       props: {
-        selected: selectedDate.value
+        // selected: selectedDate.value
       },
       closeCallback : (result) => 
       {
-        selectedDate.value = result
+        selectedDate.value = result.value
       }
     })
     
    }
+
+  const searchForTrips = () =>
+  {
+
+  }
 
 </script>
 
@@ -83,7 +89,10 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
         <StackLayout>
         <Button :text="selectedDate == '' ? 'Pick a Date' : selectedDate " @tap="openDateModal" />
         </StackLayout>
-    
+      
+      <StackLayout v-if="selectedCity && selectedTo ">
+        <Button :text="'Search'" width="200" class=" bg-lime-200 rounded-md shadow-xl" @tap="searchForTrips"/>
+      </StackLayout>
     </StackLayout>
     </Page>
   
