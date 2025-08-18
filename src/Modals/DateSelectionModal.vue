@@ -25,11 +25,12 @@ import {
   CalendarFontStyle 
 } from 'nativescript-ui-calendar';
 
-const selectedDate = ref(null);
+const selectedDate = ref();
 
 function onDateSelected(event) {
-  selectedDate.value = event.value;
+  selectedDate.value = event.date;
   $closeModal(selectedDate.value); // Pass the raw date value, not a ref
+  console.log(selectedDate.value)
 }
 
 // Define your calendar styles

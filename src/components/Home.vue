@@ -8,8 +8,8 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
 
   const selectedCity = ref('');
   const selectedTo = ref('');
-  const selectedDate = ref('');
-
+  const selectedDate = ref();
+  var formated = ref('');
    const selectCity = () =>
    {
     $showModal(CityModal, {
@@ -43,12 +43,18 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
     $showModal(DateSelectionModal,{
       fullscreen: true,
       props: {
-        // selected: selectedDate.value
+         //selected: selectedDate.value
       },
       closeCallback : (result) => 
       {
-        selectedDate.value = result.value
+        selectedDate.value = result
+        formated = selectedDate.value.toLocaleDateString("en-US",
+        {
+          weekday: "short",
+          day: "numeric",
+        });
       }
+      
     })
     
    }
@@ -87,7 +93,7 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
      </FlexboxLayout>
       </StackLayout>
         <StackLayout>
-        <Button :text="selectedDate == '' ? 'Pick a Date' : selectedDate " @tap="openDateModal" />
+        <Button :text="selectedDate == null ? 'Pick a Date' : formated.substring(0,10) " @tap="openDateModal" />
         </StackLayout>
       
       <StackLayout v-if="selectedCity && selectedTo ">
