@@ -5,10 +5,16 @@ import { $showModal, ref } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
 import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
+import PassengersModal from '~/Modals/PassengersModal.vue';
 
   const selectedCity = ref('');
   const selectedTo = ref('');
   const selectedDate = ref();
+  const selectedPassengers = ref({
+    adults: 1,
+    children: 0,
+    infants: 0
+  });
   var formated = ref('');
    const selectCity = () =>
    {
@@ -59,6 +65,29 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
     
    }
 
+   const selectPassengers = () =>
+   {
+    $showModal(PassengersModal,{
+      fullscreen: true,
+      props: {
+
+      },
+      closeCallback: (result) =>
+      {
+        if (result)
+        {
+        selectedPassengers.value = result
+        console.log(selectedPassengers.value)
+        }
+        else
+        {
+          console.log("Modal closed without selection");
+        }
+         
+      }
+    })
+   }
+
   const searchForTrips = () =>
   {
 
@@ -96,6 +125,13 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
         <Button :text="selectedDate == null ? 'Pick a Date' : formated.substring(0,10) " @tap="openDateModal" />
         </StackLayout>
       
+      <!-- Passengers -->
+      <Button :text="selectedTo == '' ? 'Passengers' : 'Adult' " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+     <FlexboxLayout justifyContent="center" alignItems="center" height="100">
+      
+     </FlexboxLayout>
+      
+     <!-- Search -->
       <StackLayout v-if="selectedCity && selectedTo ">
         <Button :text="'Search'" width="200" class=" bg-lime-200 rounded-md shadow-xl" @tap="searchForTrips"/>
       </StackLayout>
