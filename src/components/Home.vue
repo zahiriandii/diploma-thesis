@@ -11,7 +11,7 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
   const selectedTo = ref('');
   const selectedDate = ref();
   const selectedPassengers = ref({
-    adults: 1,
+    adults: 0,
     children: 0,
     infants: 0
   });
@@ -77,7 +77,7 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
         if (result)
         {
         selectedPassengers.value = result
-        console.log(selectedPassengers.value)
+        console.log(selectedPassengers.value.adults)
         }
         else
         {
@@ -126,7 +126,7 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
         </StackLayout>
       
       <!-- Passengers -->
-      <Button :text="selectedTo == '' ? 'Passengers' : 'Adult' " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+      <Button :text="!selectedPassengers.adults ? 'Passengers' : `${selectedPassengers.adults.toString()} Adult's`  " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
      <FlexboxLayout justifyContent="center" alignItems="center" height="100">
       
      </FlexboxLayout>

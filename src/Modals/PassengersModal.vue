@@ -25,7 +25,11 @@ const done = () => {
     children: children.value,
     infants: infants.value,
   });
-  $closeModal();
+  $closeModal({
+    adults: adults.value,
+    children: children.value,
+    infants: infants.value,
+  });
 };
 </script>
 
