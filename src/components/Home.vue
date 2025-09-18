@@ -6,16 +6,19 @@ import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
 import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
+import ReturnDateSelection from '~/Modals/ReturnDateSelection.vue';
 
   const selectedCity = ref('');
   const selectedTo = ref('');
   const selectedDate = ref();
+  const selectedReturnDate = ref();
   const selectedPassengers = ref({
     adults: 0,
     children: 0,
     infants: 0
   });
-  var formated = ref('');
+  var formatedOneWay = ref('');
+  var formatedReturnDate = ref('');
    const selectCity = () =>
    {
     $showModal(CityModal, {
@@ -43,7 +46,7 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
       }
      })
    }
-
+    // OneWayDateSelection
    const openDateModal = () =>
    {
     $showModal(DateSelectionModal,{
@@ -54,7 +57,7 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
       closeCallback : (result) => 
       {
         selectedDate.value = result
-        formated = selectedDate.value.toLocaleDateString("en-US",
+        formatedOneWay = selectedDate.value.toLocaleDateString("en-US",
         {
           weekday: "short",
           day: "numeric",
@@ -65,6 +68,25 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
     
    }
 
+   const openReturnDateSelection = () =>
+   {
+     $showModal(ReturnDateSelection,{
+      fullscreen: true,
+      props:
+      {
+
+      },
+      closeCallback: (result) =>
+      {
+        selectedReturnDate.value = result;
+        formatedReturnDate = selectedReturnDate.value.toLocaleDateString("en-US",
+        {
+          weekday: "short",
+          day: "numeric",
+        });
+      }
+     })
+   }
    const selectPassengers = () =>
    {
     $showModal(PassengersModal,{
@@ -121,12 +143,13 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
       <Label :text="'Selected To ' + selectedTo" textWrap="true" />
      </FlexboxLayout>
       </StackLayout>
-        <StackLayout>
-        <Button :text="selectedDate == null ? 'Pick a Date' : formated.substring(0,10) " @tap="openDateModal" />
-        </StackLayout>
+        <FlexboxLayout flexDirection="row" paddingLeft="65">
+          <Button  width="130" :text="selectedDate == null ? 'Pick a Date' : formatedOneWay.substring(0,10) " @tap="openDateModal" />
+          <Button  width="130" :text="selectedReturnDate == null ? 'Return Date' : formatedReturnDate.substring(0,10) " @tap="openReturnDateSelection" />
+        </FlexboxLayout>
       
       <!-- Passengers -->
-      <Button :text="!selectedPassengers.adults ? 'Passengers' : `${selectedPassengers.adults.toString()} Adult's`  " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+      <Button :text="!selectedPassengers.adults ? 'Passengers' : `${selectedPassengers.adults.toString()} Adult`  " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
      <FlexboxLayout justifyContent="center" alignItems="center" height="100">
       
      </FlexboxLayout>
