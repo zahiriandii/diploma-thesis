@@ -7,6 +7,8 @@ import CityToModal from '~/Modals/CityToModal.vue';
 import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
 import ReturnDateSelection from '~/Modals/ReturnDateSelection.vue';
+import SearchModal from '~/Modals/SearchModal.vue';
+
 
   const selectedCity = ref('');
   const selectedTo = ref('');
@@ -112,7 +114,16 @@ import ReturnDateSelection from '~/Modals/ReturnDateSelection.vue';
 
   const searchForTrips = () =>
   {
+    $showModal(SearchModal,{
+      fullscreen: true,
+      props:{
+        citys: [selectedCity.value,selectedTo.value] //error only on VsCode
+      },
+      closeCallback: (result) =>
+      {
 
+      }
+    })
   }
 
 </script>
