@@ -35,13 +35,16 @@
     </FlexboxLayout>
 
     <!-- Continue button -->
-    <Button text="Continue" class="bg-lime-500 text-white font-bold rounded-lg py-2" />
+    <Button text="Continue" class="bg-lime-500 text-white font-bold rounded-lg py-2" @tap="tripReservation" />
   </StackLayout>
 
 
 </template>
 
 <script setup lang="ts">
+import { $showModal } from 'nativescript-vue';
+import TripReservationModal from '~/Modals/TripReservationModal.vue';
+
 defineProps({
   departureTime: { type: String, default: "19:55" },
   departureStation: { type: String, default: "Kumanovo Central Station" },
@@ -51,4 +54,18 @@ defineProps({
   arrivalStation: { type: String, default: "Brussels Central Station" },
   price: { type: String, default: "€100" }
 })
+
+const tripReservation = () =>
+{
+  $showModal(TripReservationModal,{
+    fullscreen: true,
+    props: {
+
+    },
+    closeCallback: (tripData) =>
+    {
+
+    }
+  })
+}
 </script>
