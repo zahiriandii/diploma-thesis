@@ -81,7 +81,31 @@
           <Label text="Used only to contact you in case of delays or itinerary changes."
             class="text-xs text-gray-500" />
         </StackLayout>
-        <Button text="Proceed  to payment" class="bg-lime-500 text-white font-bold rounded-lg py-2"  />
+        <StackLayout class="bg-white rounded-2xl shadow p-4 space-y-3">
+    <!-- Section Title -->
+    <Label text="5 Payment" class="text-lg font-bold text-green-600" />
+    <Label text="Please choose a payment method" class="text-sm text-gray-600" />
+
+    <!-- Cards Option -->
+    <StackLayout orientation="horizontal" @tap="selected = 'cards'"
+      :class="['flex-row items-center justify-between border rounded-xl p-3',
+              selected === 'cards' ? 'border-green-500 bg-green-50' : 'border-gray-300']">
+      <StackLayout orientation="horizontal" class="items-center space-x-3">
+        <Label :text="selected === 'cards' ? '🔘' : '⚪️'" class="text-xl" />
+        <Label text="💳 Card" class="font-semibold text-base" />
+      </StackLayout>
+    </StackLayout>
+    <!-- cash payment -->
+    <StackLayout orientation="horizontal" @tap="selected = 'cash'"
+      :class="['flex-row items-center justify-between border rounded-xl p-3',
+              selected === 'cash' ? 'border-green-500 bg-green-50' : 'border-gray-300']">
+      <StackLayout orientation="horizontal" class="items-center space-x-3">
+        <Label :text="selected === 'cash' ? '🔘' : '⚪️'" class="text-xl" />
+        <Label text="💵 Cash" class="font-semibold text-base" />
+      </StackLayout>
+    </StackLayout>
+    </StackLayout>
+        <Button text="Proceed  to payment" class="bg-lime-500 text-white font-bold rounded-lg py-2" />
       </StackLayout>
     </ScrollView>
   </Page>
@@ -96,7 +120,7 @@ const luggageCount = ref(0);
 const climateContribution = ref(false);
 const email = ref("");
 const phone = ref("");
-
+const selected = ref("");
 const incrementLuggage = () => {
   luggageCount.value++;
 };
