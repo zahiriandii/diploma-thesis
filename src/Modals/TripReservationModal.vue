@@ -105,14 +105,15 @@
       </StackLayout>
     </StackLayout>
     </StackLayout>
-        <Button text="Proceed  to payment" class="bg-lime-500 text-white font-bold rounded-lg py-2" />
+        <Button text="Proceed  to payment" class="bg-lime-500 text-white font-bold rounded-lg py-2" @tap="proceedToPayment"/>
       </StackLayout>
     </ScrollView>
   </Page>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "nativescript-vue";
+import { $showModal, ref } from "nativescript-vue";
+import TripReservationInfoModal from "./TripReservationInfoModal.vue";
 
 const firstName = ref("");
 const lastName = ref("");
@@ -138,4 +139,18 @@ const onSelectSeat = () => {
 const onNeighbourFree = () => {
   console.log("Neighbour-free tapped");
 };
+
+const proceedToPayment = () =>
+{
+ $showModal(TripReservationInfoModal,{
+  fullscreen: true,
+  props: {
+
+  },
+  closeCallback: (data) => 
+  {
+    
+  }
+ })
+}
 </script>
