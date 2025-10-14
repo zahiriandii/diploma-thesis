@@ -142,7 +142,7 @@ import SearchModal from '~/Modals/SearchModal.vue';
         
         
         
-      <Button :text="selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
+      <Button :text="selectedCity == null || selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
       <!-- Flexbox inside StackLayout -->
      <FlexboxLayout justifyContent="center" alignItems="center" height="100">
       <Label :text="'Selected From ' + selectedCity" />

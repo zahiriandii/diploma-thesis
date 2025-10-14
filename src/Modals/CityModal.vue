@@ -1,62 +1,111 @@
 <template>
-  <Page>
-  <FlexboxLayout flexDirection="column" class="h-full bg-gray-100 p-4">
-    
-    <!-- Back Button -->
-    <FlexboxLayout flexDirection="row" class="mb-4 items-center ">
-      <Button
-       text="X"
-       @tap="$modal.close"
-       color="black"
-       class="rounded-md mr-4 text-2xl bg-slate-200"
-      />
-      <Label
-       text="Choose a city"
-       class="bg-gray-400 text-white px-10 py-2 rounded-xl text-xl"
-       />
-    </FlexboxLayout>
-    <!-- Main content in a scrollable layout -->
-    <ScrollView class="flex-1">
-      <StackLayout class="p-4 rounded-2xl shadow-xl border-2 border-yellow-600 bg-white">
+  <Frame>
+    <Page>
+      <!-- Top bar -->
+      <ActionBar title="Leaving from" class="bg-white text-blue-800">
+        <NavigationButton
+          text="Back"
+          android.systemIcon="ic_menu_back"
+          @tap="$modal.close(null)"
+        />
+      </ActionBar>
 
-        <!-- Title -->
-        
-
-        <!-- City List -->
-        <StackLayout>
-          <StackLayout
-            v-for="(city, index) in cities"
-            :key="index"
-            class="bg-white p-6 m-2 rounded-xl shadow-md"
-            @tap="selectDesiredCity({ index })"
-          >
-            <Label :text="city" class="text-2xl text-black" />
-          </StackLayout>
+      <!-- Main content -->
+      <GridLayout rows="auto, *" class="bg-white">
+        <!-- Search bar -->
+        <StackLayout row="0" class="px-4 py-2">
+          <TextField
+            v-model="searchQuery"
+            hint="Search"
+            class="border border-gray-300 rounded-xl px-3 py-2 text-base"
+          />
         </StackLayout>
 
-      </StackLayout>
-    </ScrollView>
+        <!-- Scrollable list -->
+        <ScrollView row="1">
+          <StackLayout>
+            <template v-for="(cities, country) in filteredAirports" :key="country">
+              <!-- Country Header -->
+              <Label
+                :text="country"
+                class="bg-gray-200 text-gray-600 font-bold px-4 py-2 text-sm"
+              />
 
-  </FlexboxLayout>
-</Page>
+              <!-- City list -->
+              <StackLayout>
+                <template v-for="airport in cities" :key="airport.code">
+                  <GridLayout
+                    columns="*, auto"
+                    class="px-4 py-3 border-b border-gray-200"
+                    @tap="selectAirport(airport)"
+                  >
+                    <Label
+                      :text="airport.city"
+                      class="text-base col-0"
+                      horizontalAlignment="left"
+                    />
+                    <Label
+                      :text="airport.code"
+                      class="text-gray-500 col-1 text-sm"
+                      horizontalAlignment="right"
+                    />
+                  </GridLayout>
+                </template>
+              </StackLayout>
+            </template>
+          </StackLayout>
+        </ScrollView>
+      </GridLayout>
+    </Page>
+  </Frame>
 </template>
 
-<script lang="ts" setup>
-import { $closeModal } from 'nativescript-vue';
+<script setup>
+import { ref, computed, $closeModal } from 'nativescript-vue'
 
-  
-  
- const props = defineProps<{
-  cities: string[] 
- }>()
- 
- const selectDesiredCity = (args: any) => {
-  const index = args.index;  // Get the index of the selected item
-  const city = props.cities[index];  // Access the selected city from the cities array
-  console.log('Selected city:', city);
-  $closeModal(city);  // Close modal and return selected city
+const props = defineProps({
+  closeCallback: Function
+})
 
-};
+const searchQuery = ref("")
 
+const airports = {
+  Albania: [{ city: "Tirana", code: "TIA" }],
+  Armenia: [
+    { city: "Gyumri", code: "LWN" },
+    { city: "Yerevan", code: "EVN" },
+  ],
+  Austria: [{ city: "Vienna", code: "VIE" }],
+  Azerbaijan: [{ city: "Baku", code: "GYD" }],
+  Belgium: [{ city: "Brussels Charleroi", code: "CRL" }],
+  "Bosnia and Herzegovina": [
+    { city: "Banja Luka", code: "BNX" },
+    { city: "Sarajevo", code: "SJJ" },
+    { city: "Tuzla", code: "TZL" },
+  ],
+  Bulgaria: [{ city: "Bourgas (Black Sea)", code: "BOJ" }],
+}
+
+const filteredAirports = computed(() => {
+  if (!searchQuery.value.trim()) return airports
+
+  const query = searchQuery.value.toLowerCase()
+  const result = {}
+
+  for (const [country, cityList] of Object.entries(airports)) {
+    const filteredCities = cityList.filter(a =>
+      a.city.toLowerCase().includes(query)
+    )
+    if (filteredCities.length) result[country] = filteredCities
+  }
+
+  return result
+})
+
+const selectAirport = (airport) => {
+  console.log(airport.city)
+  $closeModal(airport.city)// Return selected city
   
+}
+
 </script>
