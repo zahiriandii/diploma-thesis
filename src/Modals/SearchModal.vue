@@ -1,6 +1,14 @@
 
 <template>
-    
+  <Frame>
+  <Page>
+    <ActionBar title="Bus Trips" class="bg-white text-blue-800">
+        <NavigationButton
+          text="Back"
+          android.systemIcon="ic_menu_back"
+          @tap="$modal.close"
+        />
+      </ActionBar>
   <StackLayout >
     <TripComponent v-for="(trip , index) in trips"
                     :index="index"
@@ -8,15 +16,15 @@
 
     </TripComponent>
   </StackLayout>
-  
-
+  </Page>
+  </Frame>
 </template>
 
 <script setup lang="ts">
 import { StackLayout } from '@nativescript/core';
 import TripComponent from '~/components/TripComponent.vue';
 import { ref } from 'nativescript-vue';
-
+import { $closeModal } from 'nativescript-vue';
 const props = defineProps<{
     citys: []
 }>();

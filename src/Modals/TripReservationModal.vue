@@ -1,6 +1,13 @@
 <template>
+  <Frame>
   <Page>
-    <ActionBar title="Booking" />
+    <ActionBar title="Booking" class="bg-white text-blue-800">
+        <NavigationButton
+          text="Back"
+          android.systemIcon="ic_menu_back"
+          @tap="$modal.close"
+        />
+      </ActionBar>
     <!-- Design this component by creating 2 more components for the sections -->
     <ScrollView>
       <StackLayout class="p-4 space-y-4">
@@ -86,6 +93,7 @@
       </StackLayout>
     </ScrollView>
   </Page>
+  </Frame>
 </template>
 
 <script lang="ts" setup>

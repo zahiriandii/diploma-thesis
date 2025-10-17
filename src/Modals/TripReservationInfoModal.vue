@@ -1,5 +1,13 @@
 <template>
+  <Frame>
   <Page>
+    <ActionBar title="Ticket Info" class="bg-white text-blue-800">
+        <NavigationButton
+          text="Back"
+          android.systemIcon="ic_menu_back"
+          @tap="$modal.close"
+        />
+      </ActionBar>
     <ScrollView>
       <StackLayout class="p-4 space-y-3">
 
@@ -110,6 +118,7 @@
       </StackLayout>
     </ScrollView>
   </Page>
+  </Frame>
 </template>
 
 <script setup lang="ts">
