@@ -58,7 +58,12 @@ import SearchModal from '~/Modals/SearchModal.vue';
       },
       closeCallback : (result) => 
       {
+         // Solved the exception when clicking the back navigation button from the departure date selection (DateSelectionModal)
         selectedDate.value = result
+        if (selectedDate.value == null)
+          {
+            return;
+          }
         formatedOneWay = selectedDate.value.toLocaleDateString("en-US",
         {
           weekday: "short",
@@ -80,7 +85,12 @@ import SearchModal from '~/Modals/SearchModal.vue';
       },
       closeCallback: (result) =>
       {
+        // Solved the exception when clicking the back navigation button from the departure date selection (ReturnDateSelectionModal)
         selectedReturnDate.value = result;
+        if(selectedReturnDate.value == null)
+          {
+            return;
+          }
         formatedReturnDate = selectedReturnDate.value.toLocaleDateString("en-US",
         {
           weekday: "short",
