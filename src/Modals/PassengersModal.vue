@@ -34,12 +34,14 @@ const done = () => {
 </script>
 
 <template>
+  <Frame>
   <Page>
+
     <ActionBar title="Add passengers">
       <NavigationButton
         text="Close"
         android.systemIcon="ic_menu_close_clear_cancel"
-        @tap="$emit('close', null)"
+        @tap="$modal.close"
       />
     </ActionBar>
 
@@ -87,6 +89,7 @@ const done = () => {
       <Button text="DONE" class="mt-6 bg-pink-600 text-white rounded-lg" @tap="done"/>
     </StackLayout>
   </Page>
+  </Frame>
 </template>
 
 <style scoped>

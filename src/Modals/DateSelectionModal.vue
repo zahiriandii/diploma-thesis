@@ -1,8 +1,14 @@
 <template>
+  <Frame>
   <Page>
-    <ActionBar title="Date Picker" />
+    <ActionBar title="Departure" class="bg-white text-blue-800">
+        <NavigationButton
+          text="Back"
+          android.systemIcon="ic_menu_back"
+          @tap="$modal.close()"
+        />
+      </ActionBar>
     <StackLayout>
-      <Button text="Close" @tap="$modal.close" class="close-button" />
       <RadCalendar
         :selectionMode="'Single'"
         @dateSelected="onDateSelected"
@@ -12,6 +18,7 @@
       
     </StackLayout>
   </Page>
+  </Frame>
 </template>
 
 <script setup>
