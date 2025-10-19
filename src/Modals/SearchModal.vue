@@ -10,6 +10,7 @@
         />
       </ActionBar>
   <StackLayout >
+    <TripDateSelector />
     <TripComponent v-for="(trip , index) in trips"
                     :index="index"
                     v-bind="trip">
@@ -23,6 +24,7 @@
 <script setup lang="ts">
 import { StackLayout } from '@nativescript/core';
 import TripComponent from '~/components/TripComponent.vue';
+import TripDateSelector from '~/components/TripDateSelector.vue';
 import { ref } from 'nativescript-vue';
 import { $closeModal } from 'nativescript-vue';
 const props = defineProps<{
@@ -38,15 +40,6 @@ const trips = ref([
     arrivalTime: "07:10 +1 day",
     arrivalStation: `${props.citys[1]}`,
     price: "€45.47"
-  },
-  {
-    departureTime: "08:30",
-    departureStation: "Munich Central Station",
-    duration: "7:45 hrs",
-    transfers: "Direct",
-    arrivalTime: "16:15",
-    arrivalStation: "Vienna Erdberg (VIB)",
-    price: "€39.99"
   }
 ])
 </script>
