@@ -13,11 +13,11 @@
           <StackLayout class="card">
             <!-- From -->
             <Label text="From" class="caption" />
-            <Button  :text="selectedCity == null || selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="200" class="input"/>
+            <Button  :text="selectedCity == null || selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="100%" class="flatButton"/>
 
             <!-- To + swap -->
             <GridLayout columns="*,auto" marginTop="8">
-               <Button :text="selectedTo == '' ? 'To' : selectedTo " @tap="selectCityTo" width="200" class="input" col="0"/>
+               <Button :text="selectedTo == '' ? 'To' : selectedTo " @tap="selectCityTo" width="100%" class="flatButton" col="0"/>
                <Button text="⇅" @tap="swapCities" col="1" class="swapBtn" />
             </GridLayout>
 
@@ -25,11 +25,11 @@
             <GridLayout columns="*,*" marginTop="8">
               <StackLayout col="0">
                 <Label text="Departing" class="caption" />
-                <Button  width="130" :text="selectedDate == null ? 'Pick a Date' : formatedOneWay.substring(0,10) " @tap="openDateModal" class="input"/>
+                <Button  width="100%" :text="selectedDate == null ? 'Pick a Date' : formatedOneWay.substring(0,10) " @tap="openDateModal" class="flatButton"/>
               </StackLayout>
               <StackLayout col="1" marginLeft="8">
                 <Label text="Return" class="caption" />
-                <Button  width="130" :text="selectedReturnDate == null ? 'Return Date' : formatedReturnDate.substring(0,10) " @tap="openReturnDateSelection" class="input"/>
+                <Button  width="100%" :text="selectedReturnDate == null ? 'Return Date' : formatedReturnDate.substring(0,10) " @tap="openReturnDateSelection" class="flatButton"/>
               </StackLayout>
             </GridLayout>
 
@@ -232,6 +232,18 @@ const selectCityTo = () =>
   color: #6B7280;
   font-size: 12;
   margin-bottom: 4;
+}
+.flatButton {
+  border-width: 1;
+  border-color: #D1D5DB;
+  border-radius: 8;
+  padding: 12;
+  font-size: 16;
+  color: #000;
+  background-color: #fff;
+  text-align: left;       /* Makes the text align like an input */
+  elevation: 0;           /* Removes Android shadow */
+  shadow-color: transparent;
 }
 .input {
   border-width: 1;
