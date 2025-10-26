@@ -4,8 +4,8 @@
   <StackLayout class="m-2 p-4 rounded-2xl bg-white shadow">
     <!-- Header -->
     <FlexboxLayout class="mb-2 space-x-2">
-      <Label text="FlixTrain" class="px-2 py-1 rounded bg-green-200 text-xs font-medium" />
-      <Label text="FlixBus" class="px-2 py-1 rounded bg-lime-200 text-xs font-medium" />
+      <Label text="Test" class="px-2 py-1 rounded bg-green-200 text-xs font-medium" />
+      <Label text="Bus" class="px-2 py-1 rounded bg-lime-200 text-xs font-medium" />
     </FlexboxLayout>
 
     <!-- Main info row -->

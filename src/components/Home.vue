@@ -1,6 +1,26 @@
 <template>
+  <Frame>
   <Page>
-    <ActionBar title="Booking" />
+    <ActionBar class="bg-green-600 text-white">
+      <GridLayout columns="auto, *, auto" class="items-center w-full px-2">
+        <!-- Left: Logo -->
+        <FlexboxLayout col="0" class="items-center space-x-2">
+          <Image src="" height="40" width="40" />
+          <Label text="Bus Ticket" class="font-bold text-lg text-blue-800" />
+        </FlexboxLayout>
+
+        <!-- Center (spacer, optional for symmetry) -->
+        <StackLayout col="1"></StackLayout>
+
+        <!-- Right: Login Button -->
+        <Button 
+          col="2"
+          text="Login"
+          @tap="toSignIn"
+          class="bg-white font-semibold text-green-700 "
+        />
+      </GridLayout>
+    </ActionBar>
 
     <GridLayout rows="*,auto" backgroundColor="#F3F4F6">
       <!-- Main content -->
@@ -62,6 +82,7 @@
       </GridLayout>
     </GridLayout>
   </Page>
+  </Frame>
 </template>
 
 <script setup lang="ts">
@@ -73,6 +94,7 @@ import DateSelectionModal from '~/Modals/DateSelectionModal.vue';
 import ReturnDateSelection from '~/Modals/ReturnDateSelection.vue';
 import SearchModal from '~/Modals/SearchModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
+import SignInModal from '~/Modals/SignInModal.vue';
 
 const tab = ref('booking');
 
@@ -211,6 +233,20 @@ const selectCityTo = () =>
   function selectTab(name: string) {
   tab.value = name;
   console.log('Selected tab:', name);
+}
+
+const toSignIn = () =>
+{
+  $showModal(SignInModal,{
+    fullscreen: true,
+    props:{
+
+    },
+    closeCallback: (result) =>
+    {
+      
+    }
+  })
 }
 
 </script>
