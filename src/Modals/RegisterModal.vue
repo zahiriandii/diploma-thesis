@@ -1,0 +1,110 @@
+<template>
+  <Page class="bg-white rounded-2xl p-6">
+    <ScrollView>
+      <StackLayout class="space-y-4">
+
+        <!-- Header -->
+        <FlexboxLayout justifyContent="space-between" alignItems="center">
+          <Label text="Register" class="text-2xl font-bold text-blue-900" />
+          <Button text="✕" @tap="$modal.close" class="text-2xl text-gray-600 bg-gray-200 rounded-full w-8 h-8" />
+        </FlexboxLayout>
+
+        <!-- First / Last Name -->
+        <GridLayout columns="*,*" class="gap-2">
+          <TextField v-model="firstName" hint="First name" class="border border-gray-300 rounded-lg px-4 py-2 text-base" col="0" />
+          <TextField v-model="lastName" hint="Last name" class="border border-gray-300 rounded-lg px-4 py-2 text-base" col="1" />
+        </GridLayout>
+
+        <!-- Date of Birth -->
+        <TextField v-model="birthDate" hint="Date of birth" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+
+        <!-- Gender Selection -->
+        <GridLayout columns="*,*" class="border border-gray-300 rounded-lg overflow-hidden">
+          <Button
+            col="0"
+            text="👩‍🦰 Female"
+            @tap="selectGender('female')"
+            :class="[
+              'py-2 text-base',
+              gender === 'female'
+                ? 'bg-blue-100 text-blue-900 font-bold'
+                : 'text-gray-600'
+            ]"
+          />
+          <Button
+            col="1"
+            text="👨‍🦱 Male"
+            @tap="selectGender('male')"
+            :class="[
+              'py-2 text-base',
+              gender === 'male'
+                ? 'bg-blue-100 text-blue-900 font-bold'
+                : 'text-gray-600'
+            ]"
+          />
+        </GridLayout>
+
+        <!-- Country Code -->
+        <TextField v-model="countryCode" hint="Country code" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+
+        <!-- Mobile Phone -->
+        <TextField v-model="phone" hint="Mobile Phone number" keyboardType="phone" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+
+        <!-- E-mail -->
+        <TextField v-model="email" hint="E-mail" keyboardType="email" autocorrect="false" autocapitalizationType="none" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+
+        <!-- Password -->
+        <GridLayout columns="*,auto" class="border border-gray-300 rounded-lg items-center px-4 py-2">
+          <TextField v-model="password" :secure="!showPassword" hint="Password" col="0" />
+          <Label :text="showPassword ? '🙈' : '👁️'" @tap="togglePassword" col="1" class="text-xl text-gray-500" />
+        </GridLayout>
+
+        <!-- Country / Region -->
+        <TextField v-model="country" hint="Country/Region" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+
+        <!-- Buttons -->
+        <Button text="Register" @tap="register" class="bg-green-700 text-white rounded-lg py-3 text-base font-semibold" />
+        <Button text="Cancel" @tap="$modal.close" class="bg-grey-900 text-black rounded-lg py-3 text-base font-semibold" />
+
+      </StackLayout>
+    </ScrollView>
+  </Page>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'nativescript-vue';
+
+const firstName = ref('');
+const lastName = ref('');
+const birthDate = ref('');
+const gender = ref('');
+const countryCode = ref('');
+const phone = ref('');
+const email = ref('');
+const password = ref('');
+const country = ref('');
+const showPassword = ref(false);
+
+function togglePassword() {
+  showPassword.value = !showPassword.value;
+}
+
+function selectGender(value: string) {
+  gender.value = value;
+}
+
+function register() {
+  console.log('Register pressed', {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    gender: gender.value,
+    email: email.value,
+  });
+}
+
+function close() {
+  console.log('Closed');
+  // If used as a modal:
+  // this.$modal.close()
+}
+</script>
