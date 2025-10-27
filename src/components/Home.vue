@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'nativescript-vue';
+import { $navigateTo, ref } from 'nativescript-vue';
 import { $showModal } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
@@ -219,20 +219,30 @@ const selectCityTo = () =>
 
   const searchForTrips = () =>
   {
-    $showModal(SearchModal,{
-      fullscreen: true,
+    $navigateTo(SearchModal,{
       props:{
-        citys: [selectedCity.value,selectedTo.value] //error only on VsCode
+        citys: [selectedCity.value, selectedTo.value]
       },
-      closeCallback: (result) =>
+      transition:
       {
-
+        name: 'slide',
+        duration: 350
       }
     })
-  }
-  function selectTab(name: string) {
-  tab.value = name;
-  console.log('Selected tab:', name);
+  //   $showModal(SearchModal,{
+  //     fullscreen: true,
+  //     props:{
+  //       citys: [selectedCity.value,selectedTo.value] //error only on VsCode
+  //     },
+  //     closeCallback: (result) =>
+  //     {
+
+  //     }
+  //   })
+  // }
+  // function selectTab(name: string) {
+  // tab.value = name;
+  // console.log('Selected tab:', name);
 }
 
 const toSignIn = () =>
