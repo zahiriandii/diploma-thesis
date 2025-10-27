@@ -99,6 +99,7 @@
 <script lang="ts" setup>
 import { $showModal, ref } from "nativescript-vue";
 import TripReservationInfoModal from "./TripReservationInfoModal.vue";
+import SeatSelector from "~/components/SeatSelector.vue";
 
 const firstName = ref("");
 const lastName = ref("");
@@ -118,7 +119,16 @@ const decrementLuggage = () => {
 };
 
 const onSelectSeat = () => {
-  console.log("Select your seat tapped");
+  $showModal(SeatSelector,{
+    fullscreen: true,
+    props: {
+
+    },
+    closeCallback: (result) =>
+    {
+      
+    }
+  })
 };
 
 const onNeighbourFree = () => {
