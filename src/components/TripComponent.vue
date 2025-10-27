@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { $showModal } from 'nativescript-vue';
+import { $navigateTo, $showModal } from 'nativescript-vue';
 import TripReservationModal from '~/Modals/TripReservationModal.vue';
 
 defineProps({
@@ -57,15 +57,25 @@ defineProps({
 
 const tripReservation = () =>
 {
-  $showModal(TripReservationModal,{
-    fullscreen: true,
+  $navigateTo(TripReservationModal,{
     props: {
 
     },
-    closeCallback: (tripData) =>
-    {
-
+    transition: {
+      name: 'slide',
+      duration: 300
     }
   })
+
+  // $showModal(TripReservationModal,{
+  //   fullscreen: true,
+  //   props: {
+
+  //   },
+  //   closeCallback: (tripData) =>
+  //   {
+
+  //   }
+  // })
 }
 </script>

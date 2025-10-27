@@ -1,11 +1,11 @@
 <template>
-  <Frame>
+  
   <Page>
     <ActionBar title="Ticket Info" class="bg-white text-blue-800">
         <NavigationButton
           text="Back"
-          android.systemIcon="ic_menu_back"
-          @tap="$modal.close"
+          ref="navBtn"
+          @tap="$navigateBack()"
         />
       </ActionBar>
     <ScrollView>
@@ -118,12 +118,13 @@
       </StackLayout>
     </ScrollView>
   </Page>
-  </Frame>
+ 
 </template>
 
 <script setup lang="ts">
 import { StackLayout } from '@nativescript/core';
-import { ref } from 'nativescript-vue';
+import { onMounted,ref } from 'nativescript-vue';
+import { isAndroid } from '@nativescript/core';
 
 const selected = ref("");
 const showCardInfo = ref(false);
@@ -131,6 +132,9 @@ const CardHolderName = ref("");
 const CardNumber = ref();
 const CardMonthAndYearExpirity = ref('');
 const CardCVV = ref();
+const navBtn = ref();
+
+
 const selectOption = async (method: string) =>
 {
   selected.value = method;
@@ -144,4 +148,9 @@ const selectOption = async (method: string) =>
       showCardInfo.value = false;
     }
 }
+onMounted(() => {
+  if (isAndroid && navBtn.value?.nativeView?.android) {
+    navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'
+  }
+})
 </script>

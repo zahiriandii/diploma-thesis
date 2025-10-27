@@ -1,11 +1,11 @@
 <template>
-  <Frame>
+  
   <Page>
     <ActionBar title="Booking" class="bg-white text-blue-800">
         <NavigationButton
           text="Back"
-          android.systemIcon="ic_menu_back"
-          @tap="$modal.close"
+          ref="navBtn"
+          @tap="$navigateBack()"
         />
       </ActionBar>
     <!-- Design this component by creating 2 more components for the sections -->
@@ -93,13 +93,14 @@
       </StackLayout>
     </ScrollView>
   </Page>
-  </Frame>
+  
 </template>
 
 <script lang="ts" setup>
-import { $showModal, ref } from "nativescript-vue";
+import { $navigateTo, $showModal, onMounted,ref } from "nativescript-vue";
 import TripReservationInfoModal from "./TripReservationInfoModal.vue";
 import SeatSelector from "~/components/SeatSelector.vue";
+import { isAndroid } from "@nativescript/core";
 
 const firstName = ref("");
 const lastName = ref("");
@@ -108,6 +109,9 @@ const climateContribution = ref(false);
 const email = ref("");
 const phone = ref("");
 const selected = ref("");
+const navBtn = ref();
+
+
 const incrementLuggage = () => {
   luggageCount.value++;
 };
@@ -137,15 +141,31 @@ const onNeighbourFree = () => {
 
 const proceedToPayment = () =>
 {
- $showModal(TripReservationInfoModal,{
-  fullscreen: true,
-  props: {
 
-  },
-  closeCallback: (data) => 
-  {
+  $navigateTo(TripReservationInfoModal,{
+    props:{
+
+    },
+    transition: {
+      name: 'fade',
+      duration: 300
+    }
+  })
+//  $showModal(TripReservationInfoModal,{
+//   fullscreen: true,
+//   props: {
+
+//   },
+//   closeCallback: (data) => 
+//   {
     
-  }
- })
+//   }
+//  })
 }
+
+onMounted(() => {
+  if (isAndroid && navBtn.value?.nativeView?.android) {
+    navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'
+  }
+})
 </script>

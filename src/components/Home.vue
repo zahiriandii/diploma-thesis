@@ -240,10 +240,13 @@ const selectCityTo = () =>
   //     }
   //   })
   // }
-  // function selectTab(name: string) {
-  // tab.value = name;
-  // console.log('Selected tab:', name);
-}
+  }
+  function selectTab(name: string) {
+  tab.value = name;
+  console.log('Selected tab:', name);
+  }
+
+
 
 const toSignIn = () =>
 {

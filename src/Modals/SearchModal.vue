@@ -4,8 +4,8 @@
   <Page>
     <ActionBar title="Bus Trips" class="bg-white text-blue-800">
         <NavigationButton
+          ref="navBtn"
           text="Back"
-          android.systemIcon="ic_menu_back"
           @tap="$navigateBack()"
         />
       </ActionBar>
@@ -26,7 +26,10 @@ import { StackLayout } from '@nativescript/core';
 import TripComponent from '~/components/TripComponent.vue';
 import TripDateSelector from '~/components/TripDateSelector.vue';
 import { ref } from 'nativescript-vue';
-import { $navigateBack } from 'nativescript-vue';
+import { onMounted,$navigateBack } from 'nativescript-vue';
+import { isAndroid } from '@nativescript/core';
+
+const navBtn = ref();
 const props = defineProps<{
     citys: []
 }>();
@@ -42,4 +45,10 @@ const trips = ref([
     price: "€45.47"
   }
 ])
+
+onMounted(() => {
+  if (isAndroid && navBtn.value?.nativeView?.android) {
+    navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'
+  }
+})
 </script>
