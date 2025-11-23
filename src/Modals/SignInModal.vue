@@ -68,21 +68,81 @@
 </template>
 
 <script setup lang="ts">
-import { Switch } from '@nativescript/core';
-import { $showModal, ref } from 'nativescript-vue';
+import { Switch,ApplicationSettings, alert } from '@nativescript/core';
+import { $closeModal, $showModal, ref } from 'nativescript-vue';
 import RegisterModal from './RegisterModal.vue';
 
 const email = ref('');
 const password = ref('');
 const agree = ref(false);
 const showPassword = ref(false);
+const isLoading = ref(false);
+
+const base_backend_url = 'http://10.0.2.2:8080';
 
 function togglePassword() {
   showPassword.value = !showPassword.value;
 }
 
-function signIn() {
-  console.log('Sign in pressed', { email: email.value, password: password.value, agree: agree.value });
+const  signIn = async () =>{
+  
+ if (!email.value || !password.value)
+ {
+  alert("Please fill the required fields");
+  return;
+ }
+
+ try {
+  isLoading.value = true;
+
+  const response = await fetch(`${base_backend_url}/auth/logIn`,
+  {
+    method: 'POST',
+    headers: 
+    {
+      'Content-type' : 'application/json'
+    },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    }),
+  }
+    
+  );
+
+  if (!response.ok)
+  {
+    const errorText = await response.text();
+    console.log("Error text:" ,errorText);
+    alert("LogIn failed please check the email and password!")
+    return;
+  }
+
+  const data = await response.json();
+  console.log("LogIn success");
+  //close modal after successful logIn -> later go to home view.
+  $closeModal();
+
+  if (data.token)
+  {
+    ApplicationSettings.setString("authToken", data.token);
+    ApplicationSettings.setString("userId", data.userId.toString());
+    ApplicationSettings.setString("userEmail", data.email);
+    ApplicationSettings.setString("firstName", data.firstName);
+    ApplicationSettings.setString("lastName", data.lastName);
+    console.log(data.firstName)
+  }
+
+ } catch (error) {
+  
+  console.log("Error while logging in:",error);
+  alert("Something went wrong , please try again later");
+ }
+ finally
+ {
+  isLoading.value = false;
+ }
+
 }
 
 const toRegister = () =>
