@@ -121,7 +121,7 @@ const  signIn = async () =>{
   const data = await response.json();
   console.log("LogIn success");
   //close modal after successful logIn -> later go to home view.
-  $closeModal();
+  $closeModal({ success:true });
 
   if (data.token)
   {

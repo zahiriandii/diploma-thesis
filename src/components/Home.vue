@@ -7,20 +7,40 @@
         <FlexboxLayout col="0" class="items-center space-x-2">
           <Image src="" height="40" width="40" />
           <Label text="Bus Ticket" class="font-bold text-lg text-blue-800" />
+          <!-- 👋 Greeting when logged in -->
+          <Label
+            v-if="isLoggedIn"
+            :text="`Hello, ${userName}`"
+            class="font-bold text-lg text-blue-800 pl-5"
+          />
         </FlexboxLayout>
 
         <!-- Center (spacer, optional for symmetry) -->
         <StackLayout col="1"></StackLayout>
 
         <!-- Right: Login Button -->
+        <!-- When NOT logged in -->
         <Button 
+          v-if="!isLoggedIn"
           col="2"
           text="Login"
           @tap="toSignIn"
-          class="bg-white font-semibold text-green-700 "
+          class="bg-white font-semibold text-blue-700 rounded-full px-3 py-1"
+        />
+
+        <!-- When logged in: user icon button -->
+         
+        <Button
+          v-else
+          col="2"
+          text="👤"
+          @tap="toAccountDashboard"
+          class="bg-white rounded-full text-2xl text-green-700 w-9 h-9"
         />
       </GridLayout>
     </ActionBar>
+        <!-- User dropdown menu -->
+   
 
     <GridLayout rows="*,auto" backgroundColor="#F3F4F6">
       <!-- Main content -->
@@ -86,7 +106,9 @@
 </template>
 
 <script setup lang="ts">
-import { $navigateTo, ref } from 'nativescript-vue';
+import { $closeModal, $navigateTo, ref } from 'nativescript-vue';
+import { ApplicationSettings } from '@nativescript/core';
+import { onMounted } from 'nativescript-vue';
 import { $showModal } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
 import CityToModal from '~/Modals/CityToModal.vue';
@@ -95,6 +117,7 @@ import ReturnDateSelection from '~/Modals/ReturnDateSelection.vue';
 import SearchModal from '~/Modals/SearchModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
 import SignInModal from '~/Modals/SignInModal.vue';
+import AccountDashboardProfile from '~/Modals/AccountDashboardProfile.vue';
 
 const tab = ref('booking');
 
@@ -109,12 +132,25 @@ const selectedCity = ref('');
   });
   var formatedOneWay = ref('');
   var formatedReturnDate = ref('');
+  const isLoggedIn = ref(false);
+  const showUserMenu = ref(false);
+  const userName = ref("");
 
 function swapCities() {
   const tmp = selectedCity.value;
   selectedCity.value = selectedTo.value;
   selectedTo.value = tmp;
 }
+
+
+onMounted( ()=>{
+  //LogIn user if the token is active
+  const token = ApplicationSettings.getString('authToken');
+  isLoggedIn.value = !!token
+  userName.value = ApplicationSettings.getString('firstName') || "";
+}
+
+);
 
 const selectCity = () =>
 {
@@ -257,7 +293,31 @@ const toSignIn = () =>
     },
     closeCallback: (result) =>
     {
-      
+      if (result?.success)
+        {
+          isLoggedIn.value = true;
+          userName.value = ApplicationSettings.getString('firstName') || "";
+        }
+    }
+  })
+}
+
+
+const toAccountDashboard = () =>
+{
+  $showModal(AccountDashboardProfile,{
+    fullscreen: true,
+    props:
+    {
+
+    },
+    closeCallback: (result) =>
+    {
+      if (result?.loggedOut)
+        {
+          isLoggedIn.value = false;
+          userName.value = "";
+        }
     }
   })
 }
