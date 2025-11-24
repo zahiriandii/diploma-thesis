@@ -72,7 +72,7 @@ const searchQuery = ref("")
 const airports = {
   Albania: [{ city: "Tirana", code: "TIA" }],
   Armenia: [
-    { city: "Gyumri", code: "LWN" },
+    { city: "Kumanova", code: "LWN" },
     { city: "Yerevan", code: "EVN" },
   ],
   Austria: [{ city: "Vienna", code: "VIE" }],
