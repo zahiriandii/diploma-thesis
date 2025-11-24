@@ -17,7 +17,7 @@
 
       <StackLayout class="items-center">
         <Label :text="duration" class="text-sm text-gray-700" />
-        <Label :text="transfers" class="text-sm text-gray-500" />
+        <Label :text="seats" class="text-sm text-gray-500" />
       </StackLayout>
 
       <StackLayout class="items-end">
@@ -45,11 +45,12 @@
 import { $navigateTo, $showModal } from 'nativescript-vue';
 import TripReservationModal from '~/Modals/TripReservationModal.vue';
 
+
 defineProps({
   departureTime: { type: String, default: "19:55" },
   departureStation: { type: String, default: "Kumanovo Central Station" },
   duration: { type: String, default: "11:15 hrs" },
-  transfers: { type: String, default: "0 transfer" },
+  seats: { type: String, default: "0 seats available" },
   arrivalTime: { type: String, default: "07:10 +1 day" },
   arrivalStation: { type: String, default: "Brussels Central Station" },
   price: { type: String, default: "€100" }
