@@ -10,7 +10,7 @@
         />
       </ActionBar>
   <StackLayout >
-    <TripDateSelector />
+    <TripDateSelector @date-changed="onDateChanged"/>
     <Label v-if="isLoading" text="Loading trips..." />
     <Label v-else-if="errorMessage" :text="errorMessage" class="text-red-500" />
         <TripComponent
@@ -46,6 +46,8 @@ const errorMessage = ref<string | null>(null);
 
 const base_backend_url = 'http://10.0.2.2:8080';
 
+const currentDate = ref(props.date);
+
 //  helpers 
 const formatTime = (isoString: string) => {
   // "2025-11-24T23:11:45" -> "23:11"
@@ -77,7 +79,7 @@ const loadTrips = async () => {
       `${base_backend_url}/trips/search` +
       `?cityFromName=${encodeURIComponent(props.cityFrom)}` +
       `&cityToName=${encodeURIComponent(props.cityTo)}` +
-      `&date=${encodeURIComponent(props.date)}`;
+      `&date=${encodeURIComponent(currentDate.value)}`;
 
     console.log('Search URL:', url);
 
@@ -122,6 +124,11 @@ const loadTrips = async () => {
   }
 };
 
+const onDateChanged = (newDate: string) => {
+  console.log("Date changed from TripDateSelector:", newDate);
+  currentDate.value = newDate;
+  loadTrips(); // fetch again with new date, same cities
+};
 onMounted(() => {
   if (isAndroid && navBtn.value?.nativeView?.android) {
     navBtn.value.nativeView.android.systemIcon = 'ic_menu_back';

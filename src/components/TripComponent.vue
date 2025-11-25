@@ -29,8 +29,8 @@
     <!-- Extras row -->
     <FlexboxLayout class="justify-between mb-2">
       <Label text="WiFi" class="text-xs text-gray-600" />
-      <Label text="Power" class="text-xs text-gray-600" />
-      <Label text="Almost full" class="text-xs text-gray-600" />
+      <Label text="Charging" class="text-xs text-gray-600" />
+      <Label text="Price: " class="text-xs text-gray-600" />
       <Label :text="price" class="text-lg font-bold text-black" />
     </FlexboxLayout>
 

@@ -36,12 +36,18 @@ const availableDates = Array.from({ length: 3 }, (_, i) => {
 
 const selectedDate = ref(today)
 
-// Function triggered when a date is selected
+const formatDateForBackend = (d: Date): string => {
+  const year = d.getFullYear();
+  const month = (d.getMonth() + 1).toString().padStart(2, "0");
+  const day = d.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`; // "2025-11-25"
+};
+
 const selectDate = (date: Date) => {
-  selectedDate.value = date
-  const iso = date.toISOString().split('T')[0] // yyyy-mm-dd
-  emit('dateChanged', iso) // send date string to parent
-}
+  selectedDate.value = date;
+  const iso = formatDateForBackend(date);
+  emit('dateChanged', iso);  // send "YYYY-MM-DD"
+};
 
 // Format date like “Sun, 19 Oct”
 const formatDate = (date: Date): string => {
