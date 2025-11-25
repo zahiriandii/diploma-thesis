@@ -54,12 +54,19 @@
             <!-- From -->
             <Label text="From" class="caption" />
             <Button  :text="selectedCity == null || selectedCity == '' ? 'From' : selectedCity " @tap="selectCity" width="100%" class="flatButton"/>
-
+            <Label 
+              v-if="errorCityFrom"
+              :text="errorCityFrom"
+              class="errorText"/>
             <!-- To + swap -->
             <GridLayout columns="*,auto" marginTop="8">
                <Button :text="selectedTo == '' ? 'To' : selectedTo " @tap="selectCityTo" width="100%" class="flatButton" col="0"/>
                <Button text="⇅" @tap="swapCities" col="1" class="swapBtn" />
             </GridLayout>
+            <Label 
+              v-if="errorCityTo"
+              :text="errorCityTo"
+              class="errorText"/>
 
             <!-- Dates -->
             <GridLayout columns="*,*" marginTop="8">
@@ -72,6 +79,10 @@
                 <Button  width="100%" :text="selectedReturnDate == null ? 'Return Date' : formatedReturnDate.substring(0,10) " @tap="openReturnDateSelection" class="flatButton"/>
               </StackLayout>
             </GridLayout>
+            <Label 
+                v-if="errorDate"
+                :text="errorDate"
+                class="errorText"/>
 
             <!-- Passengers -->
             <Label text="Passengers/Bikes" class="caption" marginTop="8" />
@@ -118,6 +129,7 @@ import SearchModal from '~/Modals/SearchModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
 import SignInModal from '~/Modals/SignInModal.vue';
 import AccountDashboardProfile from '~/Modals/AccountDashboardProfile.vue';
+import { text } from 'stream/consumers';
 
 const tab = ref('booking');
 
@@ -135,6 +147,11 @@ const selectedCity = ref('');
   const isLoggedIn = ref(false);
   const showUserMenu = ref(false);
   const userName = ref("");
+
+  //error states
+  const errorCityFrom = ref("");
+  const errorCityTo = ref("");
+  const errorDate = ref("");
 
 function swapCities() {
   const tmp = selectedCity.value;
@@ -253,11 +270,59 @@ const selectCityTo = () =>
     })
    }
 
+   const formatDateForBackend = (value: any): string => {
+      // ensure we have a Date object
+      const d = value instanceof Date ? value : new Date(value);
+
+      const year = d.getFullYear();
+      const month = (d.getMonth() + 1).toString().padStart(2, "0");
+      const day = d.getDate().toString().padStart(2, "0");
+
+      return `${year}-${month}-${day}`;   // e.g. "2025-11-25"
+    };
+
   const searchForTrips = () =>
   {
+
+    errorCityFrom.value = "";
+    errorCityTo.value = "";
+    errorDate.value = "";
+
+
+    let hasError = false;
+
+    if (!selectedCity.value)
+      {
+        errorCityFrom.value = "Please select a city to continue";
+        hasError = true;
+      }
+
+      if (!selectedTo.value)
+      {
+        errorCityTo.value = "Please select a city to continue";
+        hasError = true;
+      }
+
+      if (!selectedDate.value)
+      {
+        errorDate.value = "Please select a date to continue";
+        hasError = true;
+      }
+
+      if(hasError)
+      {
+        return;
+      }
+
+
+    
+    const formattedDate = formatDateForBackend(selectedDate.value);
+    console.log("formted date",formattedDate);
     $navigateTo(SearchModal,{
       props:{
-        citys: [selectedCity.value, selectedTo.value]
+        cityFrom: selectedCity.value,
+        cityTo: selectedTo.value,
+        date: formattedDate,
       },
       transition:
       {
@@ -391,5 +456,10 @@ const toAccountDashboard = () =>
 }
 .inactiveTab {
   color: #6B7280;
+}
+.errorText {
+  color: #DC2626; /* red-ish */
+  font-size: 10;
+  margin-top: 4;
 }
 </style>
