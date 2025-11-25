@@ -14,10 +14,18 @@
           <TextField v-model="firstName" hint="First name" class="border border-gray-300 rounded-lg px-4 py-2 text-base" col="0" />
           <TextField v-model="lastName" hint="Last name" class="border border-gray-300 rounded-lg px-4 py-2 text-base" col="1" />
         </GridLayout>
+        <Label 
+            v-if="errorFirstName"
+            :text="errorFirstName"
+            class="errorText"/>
+        
 
         <!-- Date of Birth -->
         <TextField v-model="birthDate" hint="Date of birth" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
-
+        <Label 
+            v-if="errorbirthDate"
+            :text="errorbirthDate"
+            class="errorText"/>
         <!-- Gender Selection -->
         <GridLayout columns="*,*" class="border border-gray-300 rounded-lg overflow-hidden">
           <Button
@@ -43,25 +51,45 @@
             ]"
           />
         </GridLayout>
+        <Label 
+            v-if="errorGender"
+            :text="errorGender"
+            class="errorText"/>
 
         <!-- Country Code -->
         <TextField v-model="countryCode" hint="Country code" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
-
+        <Label 
+            v-if="errorCountryCode"
+            :text="errorCountryCode"
+            class="errorText"/>
         <!-- Mobile Phone -->
         <TextField v-model="phoneNumber" hint="Mobile Phone number" keyboardType="phone" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
-
+        <Label 
+            v-if="errorPhoneNumber"
+            :text="errorPhoneNumber"
+            class="errorText"/>
         <!-- E-mail -->
         <TextField v-model="email" hint="E-mail" keyboardType="email" autocorrect="false" autocapitalizationType="none" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
-
+        <Label 
+            v-if="errorEmail"
+            :text="errorEmail"
+            class="errorText"/>
         <!-- Password -->
         <GridLayout columns="*,auto" class="border border-gray-300 rounded-lg items-center px-4 py-2">
           <TextField v-model="password" :secure="!showPassword" hint="Password" col="0" />
           <Label :text="showPassword ? '🙈' : '👁️'" @tap="togglePassword" col="1" class="text-xl text-gray-500" />
         </GridLayout>
+        <Label 
+            v-if="errorPassword"
+            :text="errorPassword"
+            class="errorText"/>
 
         <!-- Country / Region -->
         <TextField v-model="country" hint="Country/Region" class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
-
+        <Label 
+            v-if="errorCountry"
+            :text="errorCountry"
+            class="errorText"/>
         <!-- Buttons -->
         <Button text="Register" @tap="register" class="bg-green-700 text-white rounded-lg py-3 text-base font-semibold" />
         <Button text="Cancel" @tap="$modal.close" class="bg-grey-900 text-black rounded-lg py-3 text-base font-semibold" />
@@ -74,7 +102,7 @@
 <script setup lang="ts">
 import { alert, ApplicationSettings,exitEvent } from '@nativescript/core';
 import { $closeModal, ref } from 'nativescript-vue';
-import { json } from 'stream/consumers';
+import { json, text } from 'stream/consumers';
 
 const firstName = ref('');
 const lastName = ref('');
@@ -88,6 +116,20 @@ const country = ref('');
 const showPassword = ref(false);
 const isLoading = ref(false);
 
+
+//error cases
+const errorFirstName = ref("");
+const errorLastName = ref("");
+const errorbirthDate = ref("");
+const errorGender = ref("");
+const errorCountryCode = ref("");
+const errorPhoneNumber = ref("");
+const errorEmail = ref("");
+const errorPassword = ref("");
+const errorCountry = ref("");
+
+
+
 const base_backend_url = 'http://10.0.2.2:8080';
 
 function togglePassword() {
@@ -99,12 +141,76 @@ function selectGender(value: string) {
 }
 
 const register =  async () => {
-  
-  if (!firstName.value || !lastName.value || !birthDate.value || !gender.value || !countryCode.value || !phoneNumber.value || !email.value || !password.value || !country.value )
-    {
-      alert("Please fill the required fields in order to continue to register.");
-      return;
-    }
+
+   errorFirstName.value = "";
+   errorLastName.value = "";
+   errorbirthDate.value = "";
+   errorGender.value = "";
+   errorCountryCode.value = "";
+   errorPhoneNumber.value = "";
+   errorEmail.value = "";
+   errorPassword.value = "";
+   errorCountry.value = "";
+
+   let hasError = false;
+
+   if (!firstName.value)
+   {
+      errorFirstName.value = "Please fill in the required field";
+      hasError = true;
+   }
+  if (!lastName.value)
+   {
+      errorLastName.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!birthDate.value)
+   {
+      errorbirthDate.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!gender.value)
+   {
+      errorGender.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!countryCode.value)
+   {
+      errorCountryCode.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!phoneNumber.value)
+   {
+      errorPhoneNumber.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!email.value)
+   {
+      errorEmail.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!password.value)
+   {
+      errorPassword.value = "Please fill in the required field";
+      hasError = true;
+   }
+   if (!country.value)
+   {
+      errorCountry.value = "Please fill in the required field";
+      hasError = true;
+   }
+
+   if (hasError)
+   {
+    return;
+   }
+
+
+  // if (!firstName.value || !lastName.value || !birthDate.value || !gender.value || !countryCode.value || !phoneNumber.value || !email.value || !password.value || !country.value )
+  //   {
+  //     alert("Please fill the required fields in order to continue to register.");
+  //     return;
+  //   }
 
     try {
       isLoading.value = true;
@@ -175,3 +281,11 @@ function close() {
   // this.$modal.close()
 }
 </script>
+
+<style scoped>
+.errorText {
+  color: #DC2626; /* red-ish */
+  font-size: 10;
+  margin-top: 4;
+}
+</style>

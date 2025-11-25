@@ -16,6 +16,10 @@
                    autocorrect="false"
                    autocapitalizationType="none"
                    class="border border-gray-300 rounded-lg px-4 py-2 text-base" />
+        <Label 
+          v-if="errorEmail"
+          :text="errorEmail"
+          class="errorText"/>
 
         <!-- Password -->
         <GridLayout columns="*,auto"
@@ -29,6 +33,10 @@
                  col="1"
                  class="text-xl text-gray-500" />
         </GridLayout>
+        <Label 
+          v-if="errorPassword"
+          :text="errorPassword"
+          class="errorText"/>
 
         <!-- Forgot password -->
         <Label text="Forgot your password?"
@@ -78,6 +86,10 @@ const agree = ref(false);
 const showPassword = ref(false);
 const isLoading = ref(false);
 
+//error states
+const errorEmail = ref("");
+const errorPassword = ref("");
+
 const base_backend_url = 'http://10.0.2.2:8080';
 
 function togglePassword() {
@@ -85,12 +97,27 @@ function togglePassword() {
 }
 
 const  signIn = async () =>{
+  errorEmail.value = "";
+  errorPassword.value = "";
   
- if (!email.value || !password.value)
- {
-  alert("Please fill the required fields");
-  return;
- }
+  let hasError = false;
+
+  if (!email.value)
+   {
+    errorEmail.value = "Please fill the required field";
+    hasError=true;
+   }
+
+   if(!password.value)
+   {
+    errorPassword.value = "Please fill the required field";
+    hasError = true;
+   }
+
+   if(hasError)
+   {
+    return;
+   }
 
  try {
   isLoading.value = true;
@@ -159,3 +186,11 @@ const toRegister = () =>
   })
 }
 </script>
+
+<style scoped>
+.errorText {
+  color: #DC2626; /* red-ish */
+  font-size: 10;
+  margin-top: 4;
+}
+</style>
