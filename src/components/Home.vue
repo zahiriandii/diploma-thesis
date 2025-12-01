@@ -129,8 +129,7 @@ import SearchModal from '~/Modals/SearchModal.vue';
 import PassengersModal from '~/Modals/PassengersModal.vue';
 import SignInModal from '~/Modals/SignInModal.vue';
 import AccountDashboardProfile from '~/Modals/AccountDashboardProfile.vue';
-import { text } from 'stream/consumers';
-
+import { bookingState,totalPassengers } from '~/stores/bookingStore';
 const tab = ref('booking');
 
 const selectedCity = ref('');
@@ -260,6 +259,12 @@ const selectCityTo = () =>
         {
         selectedPassengers.value = result
         console.log(selectedPassengers.value.adults)
+        bookingState.selectedPassengers =
+        {
+          adults: result.adults,
+          children: result.children,
+          infants: result.infants
+        };
         }
         else
         {
@@ -269,6 +274,9 @@ const selectCityTo = () =>
       }
     })
    }
+   //using the bookingStore.ts to store data for passengers to pass to other modals.!!
+   
+
 
    const formatDateForBackend = (value: any): string => {
       // ensure we have a Date object

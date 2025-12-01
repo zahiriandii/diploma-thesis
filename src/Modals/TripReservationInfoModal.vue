@@ -15,23 +15,23 @@
         <StackLayout class="bg-white rounded-2xl shadow border border-gray-200 p-4 m-5  space-y-3">
 
           <!-- Date -->
-          <Label text="Tue, 30 Sep" class="text-base font-semibold text-gray-800" />
+          <Label :text="`${departureDate}`" class="text-base font-semibold text-gray-800" />
 
           <!-- Operator -->
           <FlexboxLayout class="items-center">
-            <Label text="FlixBus" class="bg-lime-200 text-green-700 font-semibold rounded-xl px-3 py-0.5 text-sm" />
+            <Label text="TestBus" class="bg-lime-200 text-green-700 font-semibold rounded-xl px-3 py-0.5 text-sm" />
           </FlexboxLayout>
 
           <!-- Route -->
           <StackLayout class="mt-2 space-y-3">
             <FlexboxLayout class="justify-between items-center">
-              <Label text="Berlin Südkreuz train station" class="text-gray-700 text-base w-4/5" />
-              <Label text="00:15" class="text-gray-800 font-semibold text-base" />
+              <Label :text="`${departureStation} Main Station`" class="text-gray-700 text-base w-4/5 " />
+              <Label :text="`${departureTime}`" class="text-gray-800 font-semibold text-base" />
             </FlexboxLayout>
 
             <FlexboxLayout class="justify-between items-center">
-              <Label text="Vienna Erdberg (Busterminal VIB)" class="text-gray-700 text-base w-4/5" />
-              <Label text="09:10" class="text-gray-800 font-semibold text-base" />
+              <Label :text="`${arrivalStation} Main Station`" class="text-gray-700 text-base w-4/5" />
+              <Label :text="`${arrivalTime}`" class="text-gray-800 font-semibold text-base" />
             </FlexboxLayout>
           </StackLayout>
 
@@ -45,13 +45,13 @@
 
           <FlexboxLayout class="justify-between items-center">
             <Label text="Total (incl. VAT)" class="font-semibold text-base" />
-            <Label text="50,98 €" class="font-bold text-base" />
+            <Label :text="`${totalPrice} €`" class="font-bold text-base" />
           </FlexboxLayout>
 
           <StackLayout class="border-t border-gray-300 mt-1 pt-1 space-y-1">
             <FlexboxLayout class="justify-between">
-              <Label text="1 Adult" class="text-gray-600" />
-              <Label text="49,99 €" class="text-gray-700" />
+              <Label :text=" `${adults} Adults`" class="text-gray-600" />
+              <Label :text="`${price} €`" class="text-gray-700" />
             </FlexboxLayout>
 
             <FlexboxLayout class="justify-between">
@@ -125,7 +125,7 @@
 import { StackLayout } from '@nativescript/core';
 import { onMounted,ref } from 'nativescript-vue';
 import { isAndroid } from '@nativescript/core';
-
+import { bookingState,totalPassengers } from '~/stores/bookingStore';
 const selected = ref("");
 const showCardInfo = ref(false);
 const CardHolderName = ref("");
@@ -133,6 +133,20 @@ const CardNumber = ref();
 const CardMonthAndYearExpirity = ref('');
 const CardCVV = ref();
 const navBtn = ref();
+
+const adults = bookingState.selectedPassengers.adults;
+const totalPrice = totalPassengers.value * 100;
+
+const props = defineProps<{
+  departureStation: string,
+  arrivalStation: string,
+  tripId: string,
+  departureDate: string,
+  departureTime: string,
+  arrivalTime: string,
+  price: string
+}>()
+
 
 
 const selectOption = async (method: string) =>
