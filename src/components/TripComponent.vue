@@ -31,7 +31,7 @@
       <Label text="WiFi" class="text-xs text-gray-600" />
       <Label text="Charging" class="text-xs text-gray-600" />
       <Label text="Price: " class="text-xs text-gray-600" />
-      <Label :text="price" class="text-lg font-bold text-black" />
+      <Label :text="`€${price}`" class="text-lg font-bold text-black" />
     </FlexboxLayout>
 
     <!-- Continue button -->
@@ -46,21 +46,29 @@ import { $navigateTo, $showModal } from 'nativescript-vue';
 import TripReservationModal from '~/Modals/TripReservationModal.vue';
 
 
-defineProps({
+const props = defineProps({
   departureTime: { type: String, default: "19:55" },
   departureStation: { type: String, default: "Kumanovo Central Station" },
   duration: { type: String, default: "11:15 hrs" },
   seats: { type: String, default: "0 seats available" },
   arrivalTime: { type: String, default: "07:10 +1 day" },
   arrivalStation: { type: String, default: "Brussels Central Station" },
-  price: { type: String, default: "€100" }
+  price: { type: String, default: "€100" },
+  tripId: {type: String},
+  departureDate: { type: String}
 })
 
 const tripReservation = () =>
 {
   $navigateTo(TripReservationModal,{
     props: {
-
+      departureStation: props.departureStation,
+      arrivalStation: props.arrivalStation,
+      tripId: props.tripId,
+      departureTime: props.departureTime,
+      arrivalTime: props.arrivalTime,
+      price: props.price ,
+      departureDate: props.departureDate 
     },
     transition: {
       name: 'slide',

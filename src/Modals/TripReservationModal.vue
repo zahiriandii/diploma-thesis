@@ -1,7 +1,7 @@
 <template>
   
   <Page>
-    <ActionBar title="Booking" class="bg-white text-blue-800">
+    <ActionBar :title="`${props.departureStation} -> ${props.arrivalStation}`" class="bg-white text-blue-800">
         <NavigationButton
           text="Back"
           ref="navBtn"
@@ -36,6 +36,7 @@
             <StackLayout>
               <Label text="Select your seat" class="font-semibold text-base" />
               <Label text="from 2,99 €" class="text-sm text-gray-500" />
+              <label :text="`Selected Seat: ${selectedSeats.map(s => s.seatNumber).join(', ')}`  "/>
             </StackLayout>
           </StackLayout>
 
@@ -110,7 +111,17 @@ const email = ref("");
 const phone = ref("");
 const selected = ref("");
 const navBtn = ref();
+const selectedSeats = ref([]);
 
+const props = defineProps<{
+  departureStation: string,
+  arrivalStation: string,
+  tripId: string,
+  departureDate: string,
+  departureTime: string,
+  arrivalTime: string,
+  price: string
+}>();
 
 const incrementLuggage = () => {
   luggageCount.value++;
@@ -126,11 +137,12 @@ const onSelectSeat = () => {
   $showModal(SeatSelector,{
     fullscreen: true,
     props: {
-
+      tripId: props.tripId
     },
     closeCallback: (result) =>
     {
-      
+      console.log("Seats selected",result);
+      selectedSeats.value = result;
     }
   })
 };
@@ -144,7 +156,13 @@ const proceedToPayment = () =>
 
   $navigateTo(TripReservationInfoModal,{
     props:{
-
+      departureStation: props.departureStation,
+      arrivalStation: props.arrivalStation,
+      tripId: props.tripId,
+      departureDate: props.departureDate,
+      departureTime: props.departureTime,
+      arrivalTime: props.arrivalTime,
+      price: props.price
     },
     transition: {
       name: 'fade',
@@ -167,5 +185,6 @@ onMounted(() => {
   if (isAndroid && navBtn.value?.nativeView?.android) {
     navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'
   }
+  console.log(props.tripId)
 })
 </script>

@@ -37,7 +37,7 @@ const navBtn = ref();
 const props = defineProps<{
   cityFrom: string,
   cityTo: string,
-  date: string       // already "YYYY-MM-DD" from Home
+  date: string  // already "YYYY-MM-DD" from Home 
 }>();
 
 const trips = ref<any[]>([]);
@@ -110,8 +110,9 @@ const loadTrips = async () => {
       seats: `${t.seats} seats available`,
       arrivalTime: formatTime(t.arrivalTime),
       arrivalStation: t.cityTo,
-      price: `€${t.price}`,
-      tripId: t.tripId,   //later
+      price: `${t.price}`,
+      tripId: t.tripId,  
+      departureDate: props.date
     }));
 
     console.log('Mapped trips for UI:', trips.value);
