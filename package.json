@@ -7,6 +7,7 @@
     "build:tailwind": "tailwindcss -i ./src/tailwind.css -o ./src/app.css --watch"
   },
   "dependencies": {
+    "@nativescript-community/ui-material-snackbar": "^7.2.78",
     "@nativescript/core": "~8.8.6",
     "nativescript-ui-calendar": "^15.2.3",
     "nativescript-vue": "3.0.0"
