@@ -12,18 +12,41 @@
     <ScrollView>
       <StackLayout class="p-4 space-y-4">
 
-        <!-- Passengers Section -->
-        <StackLayout class="bg-white rounded-2xl shadow p-4 mt-5 space-y-2">
-          <Label text="1 Passengers" class="text-lg font-bold text-green-600" />
-          <Label text="* Required information" class="text-xs text-gray-500" />
+      <!-- Passengers Section -->
+      <StackLayout class="bg-white rounded-2xl shadow p-4 mt-5 space-y-2">
+        <Label
+          :text="`1 Passengers (${totalPassengers} total)`"
+          class="text-lg font-bold text-green-600"
+        />
+        <Label text="* Required information" class="text-xs text-gray-500" />
+
+        <!-- One block per passenger -->
+        <StackLayout
+          v-for="(p, index) in passengers"
+          :key="index"
+          class="mb-3"
+        >
+          <Label
+            :text="`Passenger ${index + 1} (${p.type})`"
+            class="text-sm font-semibold text-gray-700 mb-1"
+          />
 
           <GridLayout columns="*,*" class="gap-2">
-            <TextField v-model="firstName" hint="First name *" col="0"
-              class="border border-gray-300 rounded-lg px-3 py-2" />
-            <TextField v-model="lastName" hint="Last name *" col="1"
-              class="border border-gray-300 rounded-lg px-3 py-2" />
+            <TextField
+              v-model="p.firstName"
+              hint="First name *"
+              col="0"
+              class="border border-gray-300 rounded-lg px-3 py-2"
+            />
+            <TextField
+              v-model="p.lastName"
+              hint="Last name *"
+              col="1"
+              class="border border-gray-300 rounded-lg px-3 py-2"
+            />
           </GridLayout>
         </StackLayout>
+      </StackLayout>
 
         <!-- Seat Reservation Section -->
         <StackLayout class="bg-white rounded-2xl shadow p-4 mt-5 space-y-3">
@@ -98,13 +121,19 @@
 </template>
 
 <script lang="ts" setup>
-import { $navigateTo, $showModal, onMounted,ref } from "nativescript-vue";
+import { $navigateTo, $showModal, onMounted,ref,computed } from "nativescript-vue";
 import TripReservationInfoModal from "./TripReservationInfoModal.vue";
 import SeatSelector from "~/components/SeatSelector.vue";
 import { isAndroid } from "@nativescript/core";
+import { bookingState,totalPassengers } from "~/stores/bookingStore";
 
-const firstName = ref("");
-const lastName = ref("");
+type passengerForm = {
+  firstName: string,
+  lastName: string,
+  type: 'ADULT' | 'CHILD' | 'INFANT'
+}
+const passengers = ref<passengerForm[]>([]);
+
 const luggageCount = ref(0);
 const climateContribution = ref(false);
 const email = ref("");
@@ -162,7 +191,8 @@ const proceedToPayment = () =>
       departureDate: props.departureDate,
       departureTime: props.departureTime,
       arrivalTime: props.arrivalTime,
-      price: props.price
+      price: props.price,
+      passengers: passengers.value
     },
     transition: {
       name: 'fade',
@@ -185,6 +215,26 @@ onMounted(() => {
   if (isAndroid && navBtn.value?.nativeView?.android) {
     navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'
   }
-  console.log(props.tripId)
+  console.log("Trip ID:", props.tripId);
+  console.log("Selected passengers:", bookingState.selectedPassengers);
+
+  const temp: passengerForm[] = [];
+
+  // Adults
+  for (let i = 0; i < bookingState.selectedPassengers.adults; i++) {
+    temp.push({ firstName: "", lastName: "", type: "ADULT" });
+  }
+
+  // Children
+  for (let i = 0; i < bookingState.selectedPassengers.children; i++) {
+    temp.push({ firstName: "", lastName: "", type: "CHILD" });
+  }
+
+  // Infants
+  for (let i = 0; i < bookingState.selectedPassengers.infants; i++) {
+    temp.push({ firstName: "", lastName: "", type: "INFANT" });
+  }
+
+  passengers.value = temp;
 })
 </script>
