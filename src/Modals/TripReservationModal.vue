@@ -55,13 +55,29 @@
           <!-- Option 1 -->
           <StackLayout @tap="onSelectSeat"
             class="flex-row items-center border border-gray-300 rounded-xl p-3 active:bg-gray-100">
+            
             <Label text="🪑" class="text-2xl mr-3" />
+
             <StackLayout>
-              <Label text="Select your seat" class="font-semibold text-base" />
-              <Label text="from 2,99 €" class="text-sm text-gray-500" />
-              <label :text="`Selected Seat: ${selectedSeats.map(s => s.seatNumber).join(', ')}`  "/>
+                <Label text="Select your seat" class="font-semibold text-base" />
+                <Label text="Free " class="text-sm text-gray-500" />
+
+                <!-- Bold selected seat numbers -->
+                <Label>
+                  <FormattedString>
+                    <Span :text="`Selected Seats: `"
+                          fontWeight="bold" 
+                          color="green"/>
+                    <Span 
+                      :text="selectedSeats.map(s => s.seatNumber).join(', ')" 
+                      fontWeight="bold"
+                      color="red"
+                    />
+                  </FormattedString>
+                </Label>
+
             </StackLayout>
-          </StackLayout>
+        </StackLayout>
 
           <!-- Option 2 -->
           
@@ -91,7 +107,7 @@
               <Label text="Additional luggage" class="font-semibold text-base" />
               <Label text="20 kg · 80×50×30 cm" class="text-sm text-gray-500" />
             </StackLayout>
-            <Label text="+ 5,49 €" col="1" class="mr-3 text-sm font-medium text-gray-700" />
+            <Label text="+ 3 €" col="1" class="mr-3 text-sm font-medium text-gray-700" />
             <Button text="-" col="2" class="border border-gray-100 rounded-lg w-4 h-4" @tap="decrementLuggage" />
             <Label :text="luggageCount.toString()" col="3" class="w-8 text-center font-bold" />
             <Button text="+" col="4" class="border border-gray-100 rounded-lg w-4 h-4" @tap="incrementLuggage" />
@@ -124,23 +140,19 @@
 import { $navigateTo, $showModal, onMounted,ref,computed } from "nativescript-vue";
 import TripReservationInfoModal from "./TripReservationInfoModal.vue";
 import SeatSelector from "~/components/SeatSelector.vue";
-import { isAndroid } from "@nativescript/core";
-import { bookingState,totalPassengers } from "~/stores/bookingStore";
+import { FontWeight, isAndroid } from "@nativescript/core";
+import { bookingState,totalPassengers ,passengerForm} from "~/stores/bookingStore";
 
-type passengerForm = {
-  firstName: string,
-  lastName: string,
-  type: 'ADULT' | 'CHILD' | 'INFANT'
-}
+
 const passengers = ref<passengerForm[]>([]);
 
-const luggageCount = ref(0);
+// const luggageCount = ref(0);
 const climateContribution = ref(false);
 const email = ref("");
 const phone = ref("");
 const selected = ref("");
 const navBtn = ref();
-const selectedSeats = ref([]);
+const selectedSeats = ref<{ seatId: number; seatNumber: string }[]>([]);
 
 const props = defineProps<{
   departureStation: string,
@@ -152,13 +164,17 @@ const props = defineProps<{
   price: string
 }>();
 
+const luggageCount = ref(bookingState.extras.extraLuggageCount);
+
 const incrementLuggage = () => {
   luggageCount.value++;
+  bookingState.extras.extraLuggageCount = luggageCount.value;
 };
 
 const decrementLuggage = () => {
   if (luggageCount.value > 0) {
     luggageCount.value--;
+    bookingState.extras.extraLuggageCount = luggageCount.value;
   }
 };
 
@@ -166,12 +182,37 @@ const onSelectSeat = () => {
   $showModal(SeatSelector,{
     fullscreen: true,
     props: {
-      tripId: props.tripId
+      tripId: props.tripId,
+      maxSeats: totalPassengers.value
     },
-    closeCallback: (result) =>
+    closeCallback: (result?: { seatId: number; seatNumber: string }[]) =>
     {
-      console.log("Seats selected",result);
+      if (!result || result.length === 0) {
+        console.log("No seats selected");
+        return;
+      }
+
+      console.log("Seats selected", result);
+
+      // 1) Save locally
       selectedSeats.value = result;
+
+      // 2) Save in global booking state
+      bookingState.selectedSeats = result;
+
+      // 3) Map seats to passengers by index
+      bookingState.passengersForm.forEach((passenger, index) => {
+        const seat = result[index];
+
+        if (seat) {
+          passenger.seatId = seat.seatId;
+          passenger.seatNumber = seat.seatNumber;
+        } else {
+          // If fewer seats selected than passengers, clear remaining
+          passenger.seatId = undefined;
+          passenger.seatNumber = undefined;
+        }
+      });
     }
   })
 };
@@ -191,8 +232,7 @@ const proceedToPayment = () =>
       departureDate: props.departureDate,
       departureTime: props.departureTime,
       arrivalTime: props.arrivalTime,
-      price: props.price,
-      passengers: passengers.value
+      price: props.price
     },
     transition: {
       name: 'fade',
@@ -236,5 +276,6 @@ onMounted(() => {
   }
 
   passengers.value = temp;
+  bookingState.passengersForm = temp;
 })
 </script>
