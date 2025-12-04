@@ -39,6 +39,40 @@
           <Label text="DIRECT TRIP" class="text-green-700 font-bold text-sm" />
 
         </StackLayout>
+        <!-- Passenger info  -->
+        <StackLayout class="bg-white rounded-2xl shadow border border-gray-200 p-5 m-5 space-y-2">
+          <Label text="Passengers & Seats" class="text-lg font-bold text-gray-800" />
+
+          <StackLayout
+            v-for="(p, index) in passengers"
+            :key="index"
+            class="flex-row justify-between items-center py-1"
+          >
+            <!-- Left: name + type -->
+            <StackLayout>
+              <Label
+                :text="`${index + 1}. ${p.firstName || 'Passenger'} ${p.lastName || ''}`"
+                class="font-semibold text-base"
+              />
+              <Label
+                :text="`Type: ${p.type}`"
+                class="text-xs text-gray-500"
+              />
+            </StackLayout>
+
+            <!-- Right: seat -->
+            <Label
+              v-if="p.seatNumber"
+              :text="`Seat ${p.seatNumber}`"
+              class="font-bold text-base text-green-700"
+            />
+            <Label
+              v-else
+              text="No seat selected"
+              class="text-sm text-gray-400"
+            />
+          </StackLayout>
+        </StackLayout>
 
         <!-- Total Section -->
         <StackLayout class="bg-white rounded-2xl shadow border border-gray-200 p-5 m-5 space-y-2">
@@ -59,7 +93,7 @@
                 <Label text="Service Fee" class="text-gray-600" />
                 <Label text="ℹ️" class="text-gray-400 text-sm" />
               </FlexboxLayout>
-              <Label text="0,99 €" class="text-gray-700" />
+              <!-- <Label text="0,99 €" class="text-gray-700" /> -->
             </FlexboxLayout>
           </StackLayout>
 
@@ -123,9 +157,11 @@
 
 <script setup lang="ts">
 import { StackLayout } from '@nativescript/core';
-import { onMounted,ref } from 'nativescript-vue';
+import { onMounted,ref ,computed} from 'nativescript-vue';
 import { isAndroid } from '@nativescript/core';
-import { bookingState,totalPassengers } from '~/stores/bookingStore';
+import { bookingState,totalPassengers ,totalPrice} from '~/stores/bookingStore';
+
+
 const selected = ref("");
 const showCardInfo = ref(false);
 const CardHolderName = ref("");
@@ -135,7 +171,9 @@ const CardCVV = ref();
 const navBtn = ref();
 
 const adults = bookingState.selectedPassengers.adults;
-const totalPrice = totalPassengers.value * 100;
+
+
+const passengers = computed(() => bookingState.passengersForm);
 
 const props = defineProps<{
   departureStation: string,

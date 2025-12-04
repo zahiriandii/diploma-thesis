@@ -137,7 +137,7 @@ const selectedCity = ref('');
   const selectedDate = ref();
   const selectedReturnDate = ref();
   const selectedPassengers = ref({
-    adults: 0,
+    adults: 1,
     children: 0,
     infants: 0
   });
@@ -259,6 +259,7 @@ const selectCityTo = () =>
         {
         selectedPassengers.value = result
         console.log(selectedPassengers.value.adults)
+        //using the bookingStore.ts to store data for passengers to pass to other modals.!!
         bookingState.selectedPassengers =
         {
           adults: result.adults,
@@ -274,7 +275,7 @@ const selectCityTo = () =>
       }
     })
    }
-   //using the bookingStore.ts to store data for passengers to pass to other modals.!!
+   
    
 
 
