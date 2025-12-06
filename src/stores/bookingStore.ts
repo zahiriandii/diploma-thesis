@@ -8,6 +8,7 @@ export type passengerForm = {
   seatNumber?: string;
 };
 
+
 export const bookingState = reactive({
   tripId: null as number | null,
   departureStation: "",
@@ -25,9 +26,31 @@ export const bookingState = reactive({
 
   extras: {
     extraLuggageCount: 0
-  }
+  },
+
+  contactEmail: "",
+  constactPhone: ""
 });
 
+export const resetBookingState = () => {
+  bookingState.tripId = null;
+  bookingState.departureStation = "";
+  bookingState.arrivalStation = "";
+  bookingState.basePrice = 0;
+
+  bookingState.selectedPassengers = {
+    adults: 1,
+    children: 0,
+    infants: 0
+  };
+
+  bookingState.passengersForm = [];
+  bookingState.selectedSeats = [];
+
+  bookingState.extras.extraLuggageCount = 0;
+
+  bookingState.contactEmail = "";
+};
 
 export const totalPassengers = computed(() =>
   bookingState.selectedPassengers.adults +

@@ -1,5 +1,5 @@
 <template>
-  <Frame>
+  
   <Page>
     <ActionBar class="bg-green-600 text-white">
       <GridLayout columns="auto, *, auto" class="items-center w-full px-2">
@@ -113,7 +113,7 @@
       </GridLayout>
     </GridLayout>
   </Page>
-  </Frame>
+
 </template>
 
 <script setup lang="ts">
