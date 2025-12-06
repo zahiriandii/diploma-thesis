@@ -101,16 +101,45 @@
           </StackLayout>
 
           <!-- Additional luggage -->
-          <GridLayout columns="*,auto,auto,auto" class="items-center border-t border-b border-gray-200 py-3">
+          <GridLayout
+            columns="*, auto, auto, auto, auto"
+            class="items-center border-t border-b border-gray-200 py-3"
+          >
             <StackLayout col="0">
               <Label text="Additional luggage" class="font-semibold text-base" />
               <Label text="20 kg · 80×50×30 cm" class="text-sm text-gray-500" />
             </StackLayout>
+
             <Label text="+ 3 €" col="1" class="mr-3 text-sm font-medium text-gray-700" />
-            <Button text="-" col="2" class="border border-gray-100 rounded-lg w-4 h-4" @tap="decrementLuggage" />
-            <Label :text="luggageCount.toString()" col="3" class="w-8 text-center font-bold" />
-            <Button text="+" col="4" class="border border-gray-100 rounded-lg w-4 h-4" @tap="incrementLuggage" />
-        </GridLayout>
+
+            <!-- Small rounded - button -->
+            <Button
+              text="-"
+              col="2"
+              class="border border-gray-300 rounded-full text-center"
+              width="35"
+              height="35"
+              @tap="decrementLuggage()"
+            />
+
+            <!-- Luggage count -->
+            <Label
+              :text="luggageCount.toString()"
+              col="3"
+              class="w-8 text-center font-bold"
+            />
+
+            <!-- Small rounded + button -->
+            <Button
+              text="+"
+              col="4"
+              class="border border-gray-300 rounded-full text-center"
+              width="35"
+              height="35"
+              @tap="incrementLuggage()"
+            />
+          </GridLayout>
+
         </StackLayout>
 
         <!-- Contact Section -->

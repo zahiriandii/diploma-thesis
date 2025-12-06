@@ -1,45 +1,53 @@
 <template>
   
   <Page>
-    <ActionBar class="bg-green-600 text-white">
-      <GridLayout columns="auto, *, auto" class="items-center w-full px-2">
-        <!-- Left: Logo -->
-        <FlexboxLayout col="0" class="items-center space-x-2">
-          <Image src="" height="40" width="40" />
-          <Label text="Bus Ticket" class="font-bold text-lg text-blue-800" />
-          <!-- 👋 Greeting when logged in -->
-          <Label
-            v-if="isLoggedIn"
-            :text="`Hello, ${userName}`"
-            class="font-bold text-lg text-blue-800 pl-5"
-          />
+      <ActionBar class="bg-green-600">
+      <GridLayout columns="auto, *, auto" class="items-center w-full px-3 py-1">
+        
+        <!-- Left: logo + app name -->
+        <FlexboxLayout col="0" class="items-center">
+          <!-- App icon (use your logo here) -->
+          <StackLayout class="bg-white rounded-full w-8 h-8 items-center justify-center mr-2">
+            <Label text="🚌" class="text-lg" />
+          </StackLayout>
+          <!-- App name -->
+          <Label text="Bus Ticket"
+                class="font-bold text-lg text-white" />
         </FlexboxLayout>
 
-        <!-- Center (spacer, optional for symmetry) -->
+        <!-- Center spacer -->
         <StackLayout col="1"></StackLayout>
 
-        <!-- Right: Login Button -->
-        <!-- When NOT logged in -->
-        <Button 
+        <!-- Right: auth area -->
+        <!-- Not logged in: pill login button -->
+        <Button
           v-if="!isLoggedIn"
           col="2"
           text="Login"
           @tap="toSignIn"
-          class="bg-white font-semibold text-blue-700 rounded-full px-3 py-1"
+          class="bg-white text-white-700 font-semibold rounded-full px-4 py-1"
         />
 
-        <!-- When logged in: user icon button -->
-         
-        <Button
+        <!-- Logged in: avatar + greeting -->
+        <FlexboxLayout
           v-else
           col="2"
-          text="👤"
+          class="items-center"
           @tap="toAccountDashboard"
-          class="bg-white rounded-full text-2xl text-green-700 w-9 h-9"
-        />
+        >
+          <!-- Small round avatar -->
+          <StackLayout class="bg-white rounded-full w-8 h-8 items-center justify-center mr-2">
+            <Label text="👤" class="text-base text-green-700" />
+          </StackLayout>
+          <!-- Greeting text -->
+          <Label
+            :text="`Hi, ${userName.toString()}`"
+            class="text-sm font-semibold text-white"
+          />
+        </FlexboxLayout>
+
       </GridLayout>
     </ActionBar>
-        <!-- User dropdown menu -->
    
 
     <GridLayout rows="*,auto" backgroundColor="#F3F4F6">
@@ -86,8 +94,12 @@
 
             <!-- Passengers -->
             <Label text="Passengers/Bikes" class="caption" marginTop="8" />
-            <Button :text="!selectedPassengers.adults ? 'Passengers' : `${selectedPassengers.adults.toString()} Adult`  " @tap="selectPassengers" width="200" class=" bg-lime-200 rounded-md shadow-xl"/>
-
+           <Button
+            :text="`${passengerLabel}`"
+            @tap="selectPassengers"
+            width="200"
+            class="bg-lime-200 rounded-md shadow-xl"
+          />
             <!-- Search -->
              <Button :text="'Search'" width="200" class=" bg-lime-200 rounded-md shadow-xl " @tap="searchForTrips"/>
           </StackLayout>
@@ -117,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { $closeModal, $navigateTo, ref } from 'nativescript-vue';
+import { $closeModal, $navigateTo, ref,computed } from 'nativescript-vue';
 import { ApplicationSettings } from '@nativescript/core';
 import { onMounted } from 'nativescript-vue';
 import { $showModal } from 'nativescript-vue';
@@ -167,6 +179,21 @@ onMounted( ()=>{
 }
 
 );
+
+const passengerLabel = computed(() => {
+  const { adults, children, infants } = selectedPassengers.value;
+
+  const parts = [];
+
+  if (adults > 0) parts.push(`${adults} 👤${adults > 1 ? 's' : ''}`);
+  if (children > 0) parts.push(`${children} 🧒${children > 1 ? 'ren' : ''}`);
+  if (infants > 0) parts.push(`${infants} 👶${infants > 1 ? 's' : ''}`);
+
+  // If nothing selected
+  if (parts.length === 0) return "Passengers";
+
+  return parts.join(", ");
+});
 
 const selectCity = () =>
 {
