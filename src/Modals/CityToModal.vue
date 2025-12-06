@@ -70,20 +70,24 @@ const props = defineProps({
 const searchQuery = ref("")
 
 const airports = {
-  Albania: [{ city: "Tirana", code: "TIA" }],
-  Armenia: [
-    { city: "Kumanova", code: "LWN" },
-    { city: "Yerevan", code: "EVN" },
+  Macedonia: [
+    { city: "Skopje", code: "SK" },
+    { city: "Kumanova", code: "KU" },
+    { city: "Tetovo", code: "TE" },
+    { city: "Veles", code: "VE" }
+  ],
+  Kosova: [
+    { city: "Prishtina", code: "PR" },
+    { city: "Gjilan", code: "GJ" },
   ],
   Austria: [{ city: "Vienna", code: "VIE" }],
-  Azerbaijan: [{ city: "Baku", code: "GYD" }],
-  Belgium: [{ city: "Brussels Charleroi", code: "CRL" }],
-  "Bosnia and Herzegovina": [
-    { city: "Banja Luka", code: "BNX" },
-    { city: "Sarajevo", code: "SJJ" },
-    { city: "Tuzla", code: "TZL" },
+  Germany: [
+    { city: "Nuremberg", code: "NUR" },
+    { city: "Passau", code: "PAS" },
+    { city: "Cologne", code: "COL" }
   ],
-  Bulgaria: [{ city: "Bourgas (Black Sea)", code: "BOJ" }],
+  Belgium: [{ city: "Brussels Charleroi", code: "CRL" }],
+  Bulgaria: [{ city: "Sofia", code: "SOF" }],
 }
 
 const filteredAirports = computed(() => {
