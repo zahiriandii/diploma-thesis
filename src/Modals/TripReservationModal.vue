@@ -34,16 +34,15 @@
           <GridLayout columns="*,*" class="gap-2">
             <TextField
               v-model="p.firstName"
+              :class="[!p.firstName ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
               hint="First name *"
-              col="0"
-              class="border border-gray-300 rounded-lg px-3 py-2"
             />
-            <TextField
-              v-model="p.lastName"
-              hint="Last name *"
-              col="1"
-              class="border border-gray-300 rounded-lg px-3 py-2"
-            />
+           <TextField
+            v-model="p.lastName"
+            :class="[!p.lastName ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
+            col="1"
+            hint="Last name *"
+          />
           </GridLayout>
         </StackLayout>
       </StackLayout>
@@ -119,10 +118,18 @@
           <Label text="4 Contact" class="text-lg font-bold text-green-600" />
 
           <GridLayout columns="*,*" class="gap-3">
-            <TextField v-model="email" hint="Email *"
-              class="border border-gray-300 rounded-lg px-3 py-2" col="0" />
-            <TextField v-model="phone" hint="Phone number"
-              class="border border-gray-300 rounded-lg px-3 py-2" col="1" />
+            <TextField
+              v-model="email"
+              :class="[!email ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
+              col="0"
+              hint="Last name *"
+            />
+            <TextField
+              v-model="phone"
+              :class="[!phone ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
+              col="1"
+              hint="Last name *"
+            />
           </GridLayout>
 
           <Label text="Used only to contact you in case of delays or itinerary changes."
@@ -140,7 +147,7 @@
 import { $navigateTo, $showModal, onMounted,ref,computed } from "nativescript-vue";
 import TripReservationInfoModal from "./TripReservationInfoModal.vue";
 import SeatSelector from "~/components/SeatSelector.vue";
-import { FontWeight, isAndroid } from "@nativescript/core";
+import { alert, FontWeight, isAndroid } from "@nativescript/core";
 import { bookingState,totalPassengers ,passengerForm} from "~/stores/bookingStore";
 
 
@@ -223,6 +230,12 @@ const onNeighbourFree = () => {
 
 const proceedToPayment = () =>
 {
+
+    if (!validateForm())
+    {
+      return;
+    }
+
   bookingState.contactEmail = email.value;
   bookingState.constactPhone = phone.value
   $navigateTo(TripReservationInfoModal,{
@@ -251,6 +264,42 @@ const proceedToPayment = () =>
 //   }
 //  })
 }
+const validateForm = () => {
+  // Validate passengers
+  for (let p of bookingState.passengersForm) {
+    if (!p.firstName || !p.lastName) {
+      alert({
+        title: "Missing information",
+        message: "Please fill in all passenger first and last names.",
+        okButtonText: "OK"
+      });
+      return false;
+    }
+  }
+
+  // Validate seat selection
+  if (!bookingState.selectedSeats || bookingState.selectedSeats.length === 0) {
+    alert({
+      title: "Select seat",
+      message: "Please select at least one seat before proceeding.",
+      okButtonText: "OK"
+    });
+    return false;
+  }
+
+  // Validate email
+  if (!email.value || email.value.trim() === "") {
+    alert({
+      title: "Email required",
+      message: "Please enter your contact email.",
+      okButtonText: "OK"
+    });
+    return false;
+  }
+
+  return true; // all good
+};
+
 
 onMounted(() => {
   if (isAndroid && navBtn.value?.nativeView?.android) {
@@ -280,3 +329,9 @@ onMounted(() => {
   bookingState.passengersForm = temp;
 })
 </script>
+<style  scoped>
+.error-input {
+  border-color: red;
+  border-width: 2;
+}
+</style>
