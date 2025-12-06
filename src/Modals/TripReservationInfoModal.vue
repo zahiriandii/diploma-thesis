@@ -146,7 +146,7 @@
         </StackLayout>
 
       <StackLayout >
-        <Button text="Pay" class="bg-lime-500 rounded-2xl shadow border border-gray-200 p-5 m-5 space-y-2"/>
+        <Button text="Pay" class="bg-lime-500 rounded-2xl shadow border border-gray-200 p-5 m-5 space-y-2" @tap="confirmBooking"/>
       </StackLayout>
      
       </StackLayout>
@@ -156,11 +156,14 @@
 </template>
 
 <script setup lang="ts">
-import { StackLayout } from '@nativescript/core';
-import { onMounted,ref ,computed} from 'nativescript-vue';
+import { alert, StackLayout } from '@nativescript/core';
+import { onMounted,ref ,computed, $navigateBack} from 'nativescript-vue';
 import { isAndroid } from '@nativescript/core';
-import { bookingState,totalPassengers ,totalPrice} from '~/stores/bookingStore';
-
+import { bookingState,totalPassengers ,totalPrice,resetBookingState} from '~/stores/bookingStore';
+import { ApplicationSettings } from '@nativescript/core';
+import { $navigateTo } from 'nativescript-vue';
+import Home from '~/components/Home.vue';
+import BookingSuccessfulModal from './BookingSuccessfulModal.vue';
 
 const selected = ref("");
 const showCardInfo = ref(false);
@@ -200,6 +203,82 @@ const selectOption = async (method: string) =>
       showCardInfo.value = false;
     }
 }
+const base_backend_url = 'http://10.0.2.2:8080';
+
+const confirmBooking = async () => {
+  try {
+    // You will take main contact from first passenger or bookingState
+    const mainPassenger = bookingState.passengersForm[0];
+
+    const payload = {
+      tripId: Number(props.tripId),
+      firstName: mainPassenger?.firstName ?? "",
+      lastName: mainPassenger?.lastName ?? "",
+      contactEmail: bookingState.contactEmail,
+      passengers: bookingState.passengersForm.map(p => ({
+        firstName: p.firstName,
+        lastName: p.lastName,
+        type: p.type,
+        seatId: p.seatId
+      }))
+    };
+
+    console.log("Sending booking payload:", payload);
+
+    // Get your JWT token from wherever you store it (auth store, AppSettings, etc.)
+    const token = ApplicationSettings.getString('authToken');
+
+    const response = await fetch(`${base_backend_url}/api/bookings`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Booking failed:", errorText);
+      alert({
+        title: "Error",
+        message: "Booking failed. Please try again.",
+        okButtonText: "OK"
+      });
+      return;
+    }
+
+    const data = await response.json();
+    console.log("Booking success:", data);
+
+    alert({
+      title: "Success",
+      message: "Your booking has been confirmed!",
+      okButtonText: "OK"
+    });
+
+    // Optionally navigate to "My bookings" or home screen here
+    resetBookingState();
+    $navigateTo(Home,{
+      clearHistory: true
+    });
+    
+
+  } catch (err) {
+    console.error("Error calling booking API:", err);
+    alert({
+      title: "Error",
+      message: "Something went wrong. Please check your connection.",
+      okButtonText: "OK"
+    });
+  }
+ 
+};
+
+
+
+
+
 onMounted(() => {
   if (isAndroid && navBtn.value?.nativeView?.android) {
     navBtn.value.nativeView.android.systemIcon = 'ic_menu_back'

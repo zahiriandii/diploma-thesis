@@ -223,7 +223,8 @@ const onNeighbourFree = () => {
 
 const proceedToPayment = () =>
 {
-
+  bookingState.contactEmail = email.value;
+  bookingState.constactPhone = phone.value
   $navigateTo(TripReservationInfoModal,{
     props:{
       departureStation: props.departureStation,
