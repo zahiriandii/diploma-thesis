@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { $navigateTo, $showModal } from 'nativescript-vue';
 import TripReservationModal from '~/Modals/TripReservationModal.vue';
-
+import { bookingState } from '~/stores/bookingStore';
 
 const props = defineProps({
   departureTime: { type: String, default: "19:55" },
@@ -53,13 +53,15 @@ const props = defineProps({
   seats: { type: String, default: "0 seats available" },
   arrivalTime: { type: String, default: "07:10 +1 day" },
   arrivalStation: { type: String, default: "Brussels Central Station" },
-  price: { type: String, default: "€100" },
+  price: { type: Number },
   tripId: {type: String},
   departureDate: { type: String}
 })
+ 
 
 const tripReservation = () =>
 {
+  bookingState.basePrice = props.price as number;
   $navigateTo(TripReservationModal,{
     props: {
       departureStation: props.departureStation,
@@ -75,7 +77,9 @@ const tripReservation = () =>
       duration: 300
     }
   })
+  // save the price on the global variable bookingStore.ts
 
+  
   // $showModal(TripReservationModal,{
   //   fullscreen: true,
   //   props: {

@@ -161,7 +161,7 @@ const props = defineProps<{
   departureDate: string,
   departureTime: string,
   arrivalTime: string,
-  price: string
+  price: number
 }>();
 
 const luggageCount = ref(bookingState.extras.extraLuggageCount);

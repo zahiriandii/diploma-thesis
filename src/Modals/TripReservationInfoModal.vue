@@ -182,7 +182,7 @@ const props = defineProps<{
   departureDate: string,
   departureTime: string,
   arrivalTime: string,
-  price: string
+  price: number
 }>()
 
 
