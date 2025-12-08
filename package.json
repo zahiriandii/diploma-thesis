@@ -9,6 +9,7 @@
   "dependencies": {
     "@nativescript-community/ui-material-snackbar": "^7.2.78",
     "@nativescript/core": "~8.8.6",
+    "@triniwiz/nativescript-stripe": "^9.0.1",
     "nativescript-ui-calendar": "^15.2.3",
     "nativescript-vue": "3.0.0"
   },
