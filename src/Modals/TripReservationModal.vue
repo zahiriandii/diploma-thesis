@@ -55,7 +55,7 @@
           <StackLayout @tap="onSelectSeat"
             class="flex-row items-center border border-gray-300 rounded-xl p-3 active:bg-gray-100">
             
-            <Label text="🪑" class="text-2xl mr-3" />
+            <Image src="~/assets/icons/travel-2.png" width="24" height="24" />
 
             <StackLayout>
                 <Label text="Select your seat" class="font-semibold text-base" />
@@ -92,7 +92,7 @@
 
           <!-- Included per person -->
           <StackLayout class="flex-row items-center border border-gray-200 rounded-xl p-3 bg-gray-50">
-            <Label text="🧳" class="text-2xl mr-3" />
+            <Image src="~/assets/icons/suitcase.png" width="24" height="24" />
             <StackLayout>
               <Label text="Included per person" class="font-semibold text-base" />
               <Label text="1 Hand Luggage | 7 kg · 42×30×18 cm" class="text-sm text-gray-500" />
@@ -146,19 +146,19 @@
         <StackLayout class="bg-white rounded-2xl shadow p-4 mt-5 space-y-3">
           <Label text="4 Contact" class="text-lg font-bold text-green-600" />
 
-          <GridLayout columns="*,*" class="gap-3">
+          <GridLayout  class="gap-3">
             <TextField
               v-model="email"
               :class="[!email ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
               col="0"
-              hint="Last name *"
+              hint="Email address"
             />
-            <TextField
+            <!-- <TextField
               v-model="phone"
               :class="[!phone ? 'error-input' : '', 'border rounded-lg px-3 py-2']"
               col="1"
               hint="Last name *"
-            />
+            /> -->
           </GridLayout>
 
           <Label text="Used only to contact you in case of delays or itinerary changes."

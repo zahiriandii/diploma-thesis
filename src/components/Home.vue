@@ -8,7 +8,7 @@
         <FlexboxLayout col="0" class="items-center">
           <!-- App icon (use your logo here) -->
           <StackLayout class="bg-white rounded-full w-8 h-8 items-center justify-center mr-2">
-            <Label text="🚌" class="text-lg" />
+            <Image src="~/assets/icons/bus.png" width="24" height="24" />
           </StackLayout>
           <!-- App name -->
           <Label text="Bus Ticket"
@@ -37,7 +37,7 @@
         >
           <!-- Small round avatar -->
           <StackLayout class="bg-white rounded-full w-8 h-8 items-center justify-center mr-2">
-            <Label text="👤" class="text-base text-green-700" />
+            <Image src="~/assets/icons/profile.png" width="24" height="24" />
           </StackLayout>
           <!-- Greeting text -->
           <Label
@@ -109,17 +109,17 @@
       <!-- Bottom navigation -->
       <GridLayout row="1" columns="*,*,*" class="bottomNav">
         <StackLayout col="0" class="navItem" @tap="selectTab('booking')">
-          <Label text="🔍" />
+          <Image src="~/assets/icons/search.png" width="24" height="24" />
           <Label text="Booking" :class="tab === 'booking' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
 
         <StackLayout col="1" class="navItem" @tap="selectTab('tickets')">
-          <Label text="🎟️" />
+          <Image src="~/assets/icons/travel.png" width="24" height="24" />
           <Label text="Tickets" :class="tab === 'tickets' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
 
         <StackLayout col="2" class="navItem" @tap="selectTab('more')">
-          <Label text="ℹ️" />
+          <Image src="~/assets/icons/mark.png" width="24" height="24" />
           <Label text="More" :class="tab === 'more' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
       </GridLayout>
