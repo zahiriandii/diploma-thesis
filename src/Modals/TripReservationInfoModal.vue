@@ -108,7 +108,7 @@
           </StackLayout>
 
           <!-- Cash (not wired to Stripe, optional) -->
-          <StackLayout
+          <!-- <StackLayout
             orientation="horizontal"
             @tap="selectOption('cash')"
             :class="[
@@ -120,7 +120,7 @@
               <Label :text="selected === 'cash' ? '🔘' : '⚪️'" class="text-xl" />
               <Label text="💵 Cash" class="font-semibold text-base" />
             </StackLayout>
-          </StackLayout>
+          </StackLayout> -->
 
           <!-- Card info (Stripe credit card view) -->
           <StackLayout

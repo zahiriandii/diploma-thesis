@@ -9,7 +9,7 @@
           <Label text="Seat Reservation" class="text-lg font-bold text-white" />
           <Button text="✕" @tap="close" class="text-white text-2xl bg-transparent" />
         </FlexboxLayout>
-        <Label text="Nuremberg — Berlin" class="text-base text-center text-gray-800 mt-2" />
+        
       </StackLayout>
 
       <!-- Scrollable seat map (row 1) -->
