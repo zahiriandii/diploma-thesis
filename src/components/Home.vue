@@ -113,12 +113,12 @@
           <Label text="Booking" :class="tab === 'booking' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
 
-        <StackLayout col="1" class="navItem" @tap="selectTab('tickets')">
+        <StackLayout col="1" class="navItem" @tap="openTicketInfoModal">
           <Image src="~/assets/icons/travel.png" width="24" height="24" />
           <Label text="Tickets" :class="tab === 'tickets' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
 
-        <StackLayout col="2" class="navItem" @tap="selectTab('more')">
+        <StackLayout col="2" class="navItem" @tap="moreInfo">
           <Image src="~/assets/icons/mark.png" width="24" height="24" />
           <Label text="More" :class="tab === 'more' ? 'activeTab' : 'inactiveTab'" />
         </StackLayout>
@@ -130,7 +130,7 @@
 
 <script setup lang="ts">
 import { $closeModal, $navigateTo, ref,computed } from 'nativescript-vue';
-import { ApplicationSettings } from '@nativescript/core';
+import { ApplicationSettings, Button, Label } from '@nativescript/core';
 import { onMounted } from 'nativescript-vue';
 import { $showModal } from 'nativescript-vue';
 import CityModal from '~/Modals/CityModal.vue';
@@ -142,6 +142,9 @@ import PassengersModal from '~/Modals/PassengersModal.vue';
 import SignInModal from '~/Modals/SignInModal.vue';
 import AccountDashboardProfile from '~/Modals/AccountDashboardProfile.vue';
 import { bookingState,totalPassengers } from '~/stores/bookingStore';
+import TicketInfoModal from '~/Modals/TicketInfoModal.vue';
+import MoreModal from '~/Modals/MoreModal.vue';
+
 const tab = ref('booking');
 
 const selectedCity = ref('');
@@ -421,7 +424,38 @@ const toAccountDashboard = () =>
         }
     }
   })
-}
+};
+
+const openTicketInfoModal = () =>
+  {
+    $navigateTo(TicketInfoModal,{
+      props:
+      {
+
+      },
+      transition:
+      {
+        name: 'slide',
+        duration: 350
+      }
+    })
+  }
+  const moreInfo = () =>
+  {
+    $navigateTo(MoreModal,{
+      props:
+      {
+
+      },
+      transition:
+      {
+        name: 'slide',
+        duration: 350
+      }
+    })
+  }
+
+
 
 </script>
 
