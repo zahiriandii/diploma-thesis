@@ -112,7 +112,7 @@ const selectedSeatIds = ref<number[]>([]);
 // Load from backend when modal opens
 const loadSeats = async () => {
   try {
-    const url = `http://10.0.2.2:8080/trips/${props.tripId}/seats`;
+    const url = `http://busapp-alb-536116599.eu-north-1.elb.amazonaws.com/trips/${props.tripId}/seats`;
     console.log("Loading seats from:", url);
 
      const token = getString('authToken');

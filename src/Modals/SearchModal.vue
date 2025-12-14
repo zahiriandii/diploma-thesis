@@ -44,7 +44,7 @@ const trips = ref<any[]>([]);
 const isLoading = ref(false);
 const errorMessage = ref<string | null>(null);
 
-const base_backend_url = 'http://10.0.2.2:8080';
+const base_backend_url = 'http://busapp-alb-536116599.eu-north-1.elb.amazonaws.com';
 
 const currentDate = ref(props.date);
 

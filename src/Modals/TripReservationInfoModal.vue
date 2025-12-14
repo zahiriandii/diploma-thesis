@@ -191,7 +191,7 @@ const props = defineProps<{
   price: number;
 }>();
 
-const base_backend_url = 'http://10.0.2.2:8080';
+const base_backend_url = 'http://busapp-alb-536116599.eu-north-1.elb.amazonaws.com';
 
 // choose payment method
 const selectOption = (method: 'cards' | 'cash') => {

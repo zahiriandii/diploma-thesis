@@ -114,7 +114,7 @@ type BookingDTO = {
   passengers: PassengerDTO[];
 };
 
-const API_BASE_URL = "http://10.0.2.2:8080";
+const API_BASE_URL = "http://busapp-alb-536116599.eu-north-1.elb.amazonaws.com";
 const STORAGE_KEY = "savedTicketInfo";
 
 const bookingIdInput = ref("");
