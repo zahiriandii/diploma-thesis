@@ -2,27 +2,54 @@
 <template>
   
   <Page>
-    <ActionBar title="Bus Trips" class="bg-white text-blue-800">
-        <NavigationButton
-          ref="navBtn"
-          text="Back"
-          @tap="$navigateBack()"
-        />
-      </ActionBar>
-  <StackLayout >
-    <TripDateSelector @date-changed="onDateChanged"/>
-    <Label v-if="isLoading" text="Loading trips..." />
-    <Label v-else-if="errorMessage" :text="errorMessage" class="text-red-500" />
-        <TripComponent
-          v-for="(trip , index) in trips"
-          :key="trip.tripId ?? index"
-          :index="index"
-          v-bind="trip"
-                    >
+  <ActionBar title="Bus Trips" class="bg-white text-blue-800">
+    <NavigationButton ref="navBtn" text="Back" @tap="$navigateBack()" />
+  </ActionBar>
 
-    </TripComponent>
-  </StackLayout>
-  </Page>
+  <!-- Full-page layout -->
+  <GridLayout rows="auto,*">
+
+    <!-- top: date selector -->
+    <TripDateSelector row="0" @date-changed="onDateChanged" />
+
+    <!-- bottom: content area (fills the rest of the screen) -->
+    <GridLayout row="1">
+
+      <!-- Loading -->
+      <Label
+        v-if="isLoading"
+        text="Loading trips..."
+        horizontalAlignment="center"
+        verticalAlignment="center"
+        class="text-lg"
+      />
+
+      <!-- Empty / Error message centered -->
+      <Label
+        v-else-if="errorMessage"
+        :text="errorMessage"
+        textWrap="true"
+        horizontalAlignment="center"
+        verticalAlignment="center"
+        class="text-center text-2xl font-bold text-red-500 px-6"
+      />
+
+      <!-- Trips list -->
+      <ScrollView v-else>
+        <StackLayout>
+          <TripComponent
+            v-for="(trip, index) in trips"
+            :key="trip.tripId ?? index"
+            :index="index"
+            v-bind="trip"
+          />
+        </StackLayout>
+      </ScrollView>
+
+    </GridLayout>
+  </GridLayout>
+</Page>
+
   
 </template>
 
@@ -98,7 +125,7 @@ const loadTrips = async () => {
     // If backend returns [], this is where you’ll see it
     if (!Array.isArray(data) || data.length === 0) {
       trips.value = [];
-      console.log('No trips found for that search.');
+      errorMessage.value = 'No trips available for this date.';
       return;
     }
 
